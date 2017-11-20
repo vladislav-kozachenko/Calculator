@@ -7,7 +7,7 @@ public class ExpressionIterator {
 
     private final String expression;
 
-    private final String regex = "(\\d+\\.*\\d*)|\\+|\\*|\\/|((max|min|sum)*\\(.+\\))";
+    private final String regex = "(\\d+\\.*\\d*)|\\+|\\*|\\/|\\^|\\(|,|((max|min|sum)|\\))";
 
     private final Pattern pattern;
 
@@ -16,7 +16,7 @@ public class ExpressionIterator {
     public ExpressionIterator(String expression) {
         this.expression = expression;
         pattern = Pattern.compile(regex);
-        matcher = pattern.matcher(expression);
+        matcher = pattern.matcher(this.expression);
     }
 
     public boolean hasNext(){
