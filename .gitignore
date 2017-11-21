@@ -2,3 +2,7 @@
 /.idea/
 /out/
 /.gradle/
+/fsm/out/
+/build/
+/fsm/build/
+/Calculator.iml
