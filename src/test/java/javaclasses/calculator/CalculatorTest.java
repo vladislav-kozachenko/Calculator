@@ -78,6 +78,11 @@ public class CalculatorTest {
         Assert.assertEquals(20, calculator.calculate("2*(10+5*2)/2"), 0.00001);
     }
 
+    @Test
+    public void testInnerBrackets() throws CalculationException {
+        Assert.assertEquals(10, calculator.calculate("2*(10+5*(2-2))/2"), 0.00001);
+    }
+
     @Test(expected = CalculationException.class)
     public void testEmptyString() throws CalculationException {
         calculator.calculate("");

@@ -15,7 +15,7 @@ import static javaclasses.calculator.impl.State.BINARY_OPERATOR;
 import static javaclasses.calculator.impl.State.NUMBER;
 
 /**
- * Implementation of calculator.
+ * Implements a calculator that accepts String argument and produces a double result.
  */
 public class CalculatorImpl extends FiniteStateMachine<EvaluationContext, ExpressionReader, State, CalculationException> implements Calculator {
 

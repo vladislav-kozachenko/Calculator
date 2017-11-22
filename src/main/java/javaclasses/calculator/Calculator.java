@@ -1,7 +1,8 @@
 package javaclasses.calculator;
 
 /**
- * Public API of a calculator.
+ * Public API.
+ * Represents a calculator that accepts String argument and produces a double result.
  */
 public interface Calculator {
 
