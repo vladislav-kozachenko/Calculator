@@ -1,18 +1,23 @@
 package javaclasses.calculator.impl;
 
 import javaclasses.calculator.CalculationException;
+import javaclasses.calculator.impl.BinaryOperator;
+import javaclasses.calculator.impl.Function;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.*;
 
 /**
  * Context for expression evaluation. Contains temporary storage needed for evaluation.
  */
 public class EvaluationContext {
 
+    private Function nextFunction;
+
     private final Deque<Double> operandStack = new ArrayDeque<>();
     private final Deque<BinaryOperator> operatorStack = new ArrayDeque<>();
     private final Deque<Integer> bracketStack = new ArrayDeque<>();
+    private final Deque<Function> functionStack = new LinkedList<>();
+    private final Deque<List<Double>> functionArguments = new ArrayDeque<>();
 
 
     /**
@@ -51,13 +56,12 @@ public class EvaluationContext {
     }
 
     /**
-     * Add
-     * @param operator
+     * Adds operator into operator stack.
      */
     public void pushBinaryOperator(BinaryOperator operator) {
         while (!operatorStack.isEmpty()
                 && operator.compareTo(operatorStack.peek()) <= 0
-                && (bracketStack.isEmpty() || operatorStack.size() > bracketStack.peek())){
+                && (bracketStack.isEmpty() || isInBracket())){
             popTopOperator();
         }
         operatorStack.push(operator);
@@ -68,6 +72,7 @@ public class EvaluationContext {
      */
     public void pushOpeningBracket() {
         bracketStack.push(operatorStack.size());
+        functionStack.push(nextFunction);
     }
 
     /**
@@ -76,13 +81,49 @@ public class EvaluationContext {
      */
     public boolean pushClosingBracket() {
         if (!bracketStack.isEmpty()) {
-            while (operatorStack.size() > bracketStack.peek()) {
+            while (isInBracket()) {
                 popTopOperator();
             }
             bracketStack.pop();
+            if (checkCurrentFunction()) {
+                addCurrentFunctionArgument(operandStack.pop());
+                operandStack.push(executeCurrentFunction());
+            }
             return true;
-        } else {
-            return false;
         }
+        return false;
+    }
+
+    private double executeCurrentFunction() {
+        return functionStack.pop().execute(functionArguments.pop());
+    }
+
+    public void pushFunction(Function function) {
+        nextFunction = function;
+        functionArguments.push(new ArrayList<>());
+    }
+
+    public boolean pushComma() {
+        if (checkCurrentFunction()){
+            while (!operatorStack.isEmpty()
+                    && isInBracket()){
+                popTopOperator();
+            }
+            addCurrentFunctionArgument(operandStack.pop());
+            return true;
+        }
+        return false;
+    }
+
+    private boolean checkCurrentFunction(){
+        return !functionStack.isEmpty() && functionStack.peek() != null;
+    }
+
+    private void addCurrentFunctionArgument(double argument){
+        functionArguments.peek().add(argument);
+    }
+
+    private boolean isInBracket(){
+        return !bracketStack.isEmpty() && operatorStack.size() > bracketStack.peek();
     }
 }

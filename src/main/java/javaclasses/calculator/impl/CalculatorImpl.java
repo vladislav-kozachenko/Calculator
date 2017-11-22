@@ -22,11 +22,13 @@ public class CalculatorImpl extends FiniteStateMachine<EvaluationContext, Expres
     private final ParserFactory parserFactory = new ParserFactory();
 
     private final Map<State, Set<State>> transitions = new HashMap<State, Set<State>>() {{
-        put(START, of(NUMBER, OPENING_BRACKET));
-        put(NUMBER, of(BINARY_OPERATOR, CLOSING_BRACKET, FINISH));
-        put(BINARY_OPERATOR, of(NUMBER, OPENING_BRACKET));
-        put(OPENING_BRACKET, of(NUMBER, OPENING_BRACKET));
-        put(CLOSING_BRACKET, of(BINARY_OPERATOR, CLOSING_BRACKET, FINISH));
+        put(START, of(NUMBER, OPENING_BRACKET, FUNCTION_NAME));
+        put(NUMBER, of(BINARY_OPERATOR, CLOSING_BRACKET, ARGUMENT_SEPARATOR, FINISH));
+        put(BINARY_OPERATOR, of(NUMBER, OPENING_BRACKET, FUNCTION_NAME));
+        put(FUNCTION_NAME, of(OPENING_BRACKET));
+        put(ARGUMENT_SEPARATOR, of(NUMBER, OPENING_BRACKET, FUNCTION_NAME));
+        put(OPENING_BRACKET, of(NUMBER, OPENING_BRACKET, FUNCTION_NAME));
+        put(CLOSING_BRACKET, of(BINARY_OPERATOR, CLOSING_BRACKET, ARGUMENT_SEPARATOR, FINISH));
     }};
 
     /**

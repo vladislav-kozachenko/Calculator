@@ -1,9 +1,7 @@
 package javaclasses.calculator.impl;
 
 import javaclasses.calculator.CalculationException;
-import javaclasses.calculator.impl.operator.AbstractBinaryOperator;
 import javaclasses.calculator.impl.operator.BinaryOperatorFactory;
-import javaclasses.calculator.impl.operator.PlusOperator;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

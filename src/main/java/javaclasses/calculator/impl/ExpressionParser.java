@@ -1,8 +1,5 @@
 package javaclasses.calculator.impl;
 
-import javaclasses.calculator.impl.EvaluationContext;
-import javaclasses.calculator.impl.ExpressionReader;
-
 /**
  * Parser for mathematical expression.
  */

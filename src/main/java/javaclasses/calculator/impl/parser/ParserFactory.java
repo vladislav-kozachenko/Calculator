@@ -15,6 +15,8 @@ public class ParserFactory {
         put(BINARY_OPERATOR, new BinaryOperatorParser());
         put(OPENING_BRACKET, new OpeningBracketParser());
         put(CLOSING_BRACKET, new ClosingBracketParser());
+        put(FUNCTION_NAME, new FunctionParser());
+        put(ARGUMENT_SEPARATOR, new CommaParser());
         put(FINISH, new EndOfExpressionParser());
     }};
 
