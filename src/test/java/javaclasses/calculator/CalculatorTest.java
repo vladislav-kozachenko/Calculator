@@ -119,6 +119,11 @@ public class CalculatorTest {
     }
 
     @Test
+    public void testAverageFunction() throws CalculationException {
+        Assert.assertEquals(3, calculator.calculate("avg(1,5)"), 0.00001);
+    }
+
+    @Test
     public void testInnerMaxFunctionWithExpression() throws CalculationException {
         Assert.assertEquals(11, calculator.calculate("1+max(2,5,max(6+4,5))"), 0.00001);
     }

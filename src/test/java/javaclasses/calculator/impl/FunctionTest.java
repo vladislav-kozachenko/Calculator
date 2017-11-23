@@ -32,4 +32,12 @@ public class FunctionTest {
         arguments.add(5.0);
         Assert.assertEquals(11, factory.getFunction("sum").execute(arguments), 0.0001);
     }
+
+    @Test
+    public void testAverageFunction(){
+        arguments.add(1.0);
+        arguments.add(2.0);
+        arguments.add(3.0);
+        Assert.assertEquals(2, factory.getFunction("avg").execute(arguments), 0.0001);
+    }
 }
