@@ -5,7 +5,7 @@ import javaclasses.calculator.impl.BinaryOperator;
 /**
  * Abstract mathematical operator which considers priority of operators.
  */
-public abstract class AbstractBinaryOperator implements BinaryOperator<AbstractBinaryOperator> {
+public abstract class AbstractBinaryOperator implements BinaryOperator {
 
     enum Priority {
         LOW, MEDIUM, HIGH
@@ -29,7 +29,7 @@ public abstract class AbstractBinaryOperator implements BinaryOperator<AbstractB
      * integer < 0 if the first operator is less priority.
      */
     @Override
-    public int compareTo(AbstractBinaryOperator o) {
-        return this.priority.compareTo(o.priority);
+    public int compareTo(BinaryOperator o) {
+        return this.priority.compareTo(((AbstractBinaryOperator)o).priority);
     }
 }

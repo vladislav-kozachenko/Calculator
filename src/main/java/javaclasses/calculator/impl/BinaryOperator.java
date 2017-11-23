@@ -2,9 +2,8 @@ package javaclasses.calculator.impl;
 
 /**
  * Abstract mathematical operator.
- * @param <Op> is concrete binary operator.
  */
-public interface BinaryOperator<Op extends BinaryOperator> extends Comparable<Op> {
+public interface BinaryOperator extends Comparable<BinaryOperator> {
 
     /**
      * Evaluates atomic mathematical expression.
