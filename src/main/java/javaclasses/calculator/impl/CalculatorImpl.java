@@ -34,12 +34,21 @@ public class CalculatorImpl extends FiniteStateMachine<EvaluationContext, Expres
     /**
      * Calculates mathematical expression from string.
      * Input can contain: numbers, brackets, mathematical operators.
+     * Whitespaces are allowed. Calculator is not case sensitive.
      * Operators can be used:
-     * + plus
-     * - minus
-     * * multiplication
-     * / division
-     * ^ exponentiation
+     * <li>
+     * <ul>+ plus</ul>
+     * <ul>- minus</ul>
+     * <ul>* multiplication</ul>
+     * <ul>/ division</ul>
+     * <ul>^ exponentiation</ul>
+     * </li>
+     * Functions are allowed:
+     * <li>
+     * <ul>max();</ul>
+     * <ul>sum();</ul>
+     * <ul>avg();</ul>
+     * </li>
      * @param expression is a math expression may be solved.
      * @return the result of expression evaluation (double).
      * @throws CalculationException if expression is in incorrect format.
@@ -47,7 +56,7 @@ public class CalculatorImpl extends FiniteStateMachine<EvaluationContext, Expres
     @Override
     public double calculate(String expression) throws CalculationException {
         final EvaluationContext context = new EvaluationContext();
-        start(State.START, new ExpressionReader(expression), context);
+        start(State.START, new ExpressionReader(prepareString(expression)), context);
         try {
             return context.getResult();
         } catch (CalculationException e){
@@ -78,5 +87,9 @@ public class CalculatorImpl extends FiniteStateMachine<EvaluationContext, Expres
     @Override
     protected void raiseDeadlockError(State state, ExpressionReader reader) throws CalculationException {
         throw new CalculationException("Incorrect expression format.", reader.getParsePosition());
+    }
+
+    private String prepareString(String source){
+        return source.replaceAll("\\s+","").toLowerCase();
     }
 }

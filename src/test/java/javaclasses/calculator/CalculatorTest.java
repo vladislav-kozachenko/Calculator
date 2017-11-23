@@ -133,4 +133,14 @@ public class CalculatorTest {
         Assert.assertEquals(8, calculator.calculate("max(2,5)+(1+2)"), 0.00001);
     }
 
+    @Test
+    public void testCaseSensitivity() throws CalculationException {
+        Assert.assertEquals(0, calculator.calculate("MAX(2,5)-SUM(2+3)"), 0.00001);
+    }
+
+    @Test
+    public void testWhiteSpaces() throws CalculationException {
+        Assert.assertEquals(0, calculator.calculate("1 + 2 - 3"), 0.00001);
+    }
+
 }
