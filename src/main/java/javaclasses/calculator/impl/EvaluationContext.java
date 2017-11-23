@@ -1,8 +1,6 @@
 package javaclasses.calculator.impl;
 
 import javaclasses.calculator.CalculationException;
-import javaclasses.calculator.impl.BinaryOperator;
-import javaclasses.calculator.impl.Function;
 
 import java.util.*;
 
@@ -33,7 +31,7 @@ public class EvaluationContext {
      * @return result of expression evaluation (double).
      * @throws CalculationException if expression has wrong number of brackets or if it is internal error.
      */
-    public double getResult() throws CalculationException {
+    double getResult() throws CalculationException {
 
         while (!operatorStack.isEmpty()) {
             popTopOperator();
@@ -73,6 +71,7 @@ public class EvaluationContext {
     public void pushOpeningBracket() {
         bracketStack.push(operatorStack.size());
         functionStack.push(nextFunction);
+        nextFunction = null;
     }
 
     /**

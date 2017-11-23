@@ -118,4 +118,9 @@ public class CalculatorTest {
         Assert.assertEquals(11, calculator.calculate("1+max(2,5,max(6+4,5))"), 0.00001);
     }
 
+    @Test
+    public void testBracketsAfterMaxFunction() throws CalculationException {
+        Assert.assertEquals(8, calculator.calculate("max(2,5)+(1+2)"), 0.00001);
+    }
+
 }
