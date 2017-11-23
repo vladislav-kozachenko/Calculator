@@ -2,7 +2,7 @@ package javaclasses.calculator.impl.operator;
 
 public class MinusOperator extends AbstractBinaryOperator {
 
-    public MinusOperator(Priority priority) {
+    MinusOperator(Priority priority) {
         super(priority);
     }
 

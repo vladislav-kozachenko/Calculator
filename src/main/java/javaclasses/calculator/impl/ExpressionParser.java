@@ -1,7 +1,7 @@
 package javaclasses.calculator.impl;
 
 /**
- * Parser for mathematical expression.
+ * Represents parser for mathematical expression.
  */
 public interface ExpressionParser {
 

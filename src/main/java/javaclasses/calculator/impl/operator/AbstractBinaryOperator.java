@@ -3,7 +3,7 @@ package javaclasses.calculator.impl.operator;
 import javaclasses.calculator.impl.BinaryOperator;
 
 /**
- * Abstract mathematical operator which considers priority of operators.
+ * Represents abstract mathematical operator which considers priority of operators.
  */
 public abstract class AbstractBinaryOperator implements BinaryOperator {
 
@@ -15,9 +15,8 @@ public abstract class AbstractBinaryOperator implements BinaryOperator {
 
     /**
      * Creates instance of operator and set its priority.
-     * @param priority
      */
-    public AbstractBinaryOperator(Priority priority) {
+    AbstractBinaryOperator(Priority priority) {
         this.priority = priority;
     }
 

@@ -1,7 +1,7 @@
 package javaclasses.calculator.impl;
 
 /**
- * Contains source expression and have pointer which points the position of last parsing.
+ * Represents container for source expression and have pointer which points the position of last parsing.
  */
 public class ExpressionReader {
 
@@ -10,7 +10,7 @@ public class ExpressionReader {
 
     /**
      *
-     * @param expression expression which is needed to calculate.
+     * @param expression is a string with expression which is needed to calculate.
      */
     public ExpressionReader(String expression) {
         this.expression = expression;
@@ -28,7 +28,7 @@ public class ExpressionReader {
      *
      * @return position of pointer.
      */
-    public int getParsePosition() {
+    int getParsePosition() {
         return parsePosition;
     }
 

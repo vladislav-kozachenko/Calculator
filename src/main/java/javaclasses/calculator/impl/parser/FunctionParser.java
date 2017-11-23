@@ -7,11 +7,11 @@ import javaclasses.calculator.impl.function.FunctionFactory;
 
 public class FunctionParser implements ExpressionParser {
 
-    FunctionFactory factory = new FunctionFactory();
 
     @Override
     public boolean parse(ExpressionReader reader, EvaluationContext context) {
 
+        final FunctionFactory factory = new FunctionFactory();
         final String expression = reader.getRemainingExpression();
 
         for (String name : factory.getFunctionNames()) {

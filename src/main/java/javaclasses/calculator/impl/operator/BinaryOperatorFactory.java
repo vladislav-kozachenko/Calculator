@@ -11,7 +11,7 @@ import static javaclasses.calculator.impl.operator.AbstractBinaryOperator.Priori
 import static javaclasses.calculator.impl.operator.AbstractBinaryOperator.Priority.MEDIUM;
 
 /**
- * Factory which can create instances of different binary operators.
+ * Implements factory which can create instances of different binary operators.
  */
 public class BinaryOperatorFactory {
 
