@@ -2,6 +2,8 @@ package javaclasses.calculator.fsm;
 
 import java.util.Optional;
 import java.util.Set;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class FiniteStateMachine<
         Output,
@@ -9,9 +11,15 @@ public abstract class FiniteStateMachine<
         State extends Enum,
         TransitionError extends Exception> {
 
+    private final static Logger LOG = LoggerFactory.getLogger(FiniteStateMachine.class.getName());
+
     public void start(State startState, Input input, Output output) throws TransitionError {
 
         State currentState = startState;
+
+        if ( LOG.isInfoEnabled()) {
+            LOG.info("Start state: " + startState);
+        }
 
         while (!isFinishState(currentState)) {
 
@@ -30,6 +38,11 @@ public abstract class FiniteStateMachine<
         final Set<State> transitions = getPossibleTransitions(currentState);
 
         for (State possibleState : transitions) {
+
+            if (LOG.isInfoEnabled()) {
+                LOG.info("Checking possible state: " + possibleState);
+            }
+
             if (acceptState(input, output, possibleState)) {
                 return Optional.of(possibleState);
             }
