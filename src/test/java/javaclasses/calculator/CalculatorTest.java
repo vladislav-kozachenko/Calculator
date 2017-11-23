@@ -164,6 +164,21 @@ public class CalculatorTest {
     }
 
     @Test
+    public void testLog10Function() throws CalculationException {
+        Assert.assertEquals(3, calculator.calculate("log10(1000)"), 0.00001);
+    }
+
+    @Test
+    public void testLog10FunctionWithTwoArguments() throws CalculationException {
+        try {
+            calculator.calculate("log10(1000,50)");
+            Assert.fail();
+        } catch (CalculationException e) {
+            Assert.assertEquals(13, e.getErrorPosition());
+        }
+    }
+
+    @Test
     public void testInnerMaxFunctionWithExpression() throws CalculationException {
         Assert.assertEquals(11, calculator.calculate("1+max(2,5,max(6+4,5))"), 0.00001);
     }

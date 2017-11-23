@@ -12,6 +12,7 @@ public class FunctionFactory {
         put("max", new MaxFunction());
         put("sum", new SumFunction());
         put("avg", new AverageFunction());
+        put("log10", new Logarithm10Function());
     }};
 
     public Function getFunction(String name){

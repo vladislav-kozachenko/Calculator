@@ -84,16 +84,22 @@ public class EvaluationContext {
                 popTopOperator();
             }
             bracketStack.pop();
-            if (checkCurrentFunction()) {
-                addCurrentFunctionArgument(operandStack.pop());
-                operandStack.push(executeCurrentFunction());
-            }
-            return true;
+            return !checkCurrentFunction() || closeFunction();
         }
         return false;
     }
 
-    private double executeCurrentFunction() {
+    private boolean closeFunction(){
+        try {
+            addCurrentFunctionArgument(operandStack.pop());
+            operandStack.push(executeCurrentFunction());
+            return true;
+        } catch (CalculationException e) {
+            return false;
+        }
+    }
+
+    private double executeCurrentFunction() throws CalculationException {
         return functionStack.pop().execute(functionArguments.pop());
     }
 

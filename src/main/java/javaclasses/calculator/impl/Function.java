@@ -1,5 +1,7 @@
 package javaclasses.calculator.impl;
 
+import javaclasses.calculator.CalculationException;
+
 import java.util.List;
 
 /**
@@ -7,6 +9,6 @@ import java.util.List;
  */
 public interface Function {
 
-    double execute(List<Double> args);
+    double execute(List<Double> args) throws CalculationException;
 
 }

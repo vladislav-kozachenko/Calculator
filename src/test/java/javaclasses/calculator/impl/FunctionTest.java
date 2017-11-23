@@ -1,5 +1,6 @@
 package javaclasses.calculator.impl;
 
+import javaclasses.calculator.CalculationException;
 import javaclasses.calculator.impl.function.FunctionFactory;
 import org.junit.Assert;
 import org.junit.Before;
@@ -19,14 +20,14 @@ public class FunctionTest {
     }
 
     @Test
-    public void testMaxFunction(){
+    public void testMaxFunction() throws CalculationException {
         arguments.add(1.0);
         arguments.add(5.0);
         Assert.assertEquals(5, factory.getFunction("max").execute(arguments), 0.0001);
     }
 
     @Test
-    public void testSumFunction(){
+    public void testSumFunction() throws CalculationException {
         arguments.add(1.0);
         arguments.add(5.0);
         arguments.add(5.0);
@@ -34,10 +35,28 @@ public class FunctionTest {
     }
 
     @Test
-    public void testAverageFunction(){
+    public void testAverageFunction() throws CalculationException {
         arguments.add(1.0);
         arguments.add(2.0);
         arguments.add(3.0);
         Assert.assertEquals(2, factory.getFunction("avg").execute(arguments), 0.0001);
+    }
+
+    @Test
+    public void testLog10Function() throws CalculationException {
+        arguments.add(100.0);
+        Assert.assertEquals(2, factory.getFunction("log10").execute(arguments), 0.0001);
+    }
+
+    @Test
+    public void testLog10FunctionWithSeveralArguments() throws CalculationException {
+        arguments.add(100.0);
+        arguments.add(100.0);
+        try {
+            factory.getFunction("log10").execute(arguments);
+            Assert.fail();
+        } catch (CalculationException e) {
+            Assert.assertEquals(-1, e.getErrorPosition());
+        }
     }
 }
