@@ -29,6 +29,11 @@ public class CalculatorTest {
     }
 
     @Test
+    public void testOperatorMinus() throws CalculationException {
+        Assert.assertEquals(-6, calculator.calculate("2-8"), 0.00001);
+    }
+
+    @Test
     public void testUnaryMinusInExpression() throws CalculationException {
         Assert.assertEquals(6, calculator.calculate("-2+8"), 0.00001);
     }
@@ -83,29 +88,64 @@ public class CalculatorTest {
         Assert.assertEquals(10, calculator.calculate("2*(10+5*(2-2))/2"), 0.00001);
     }
 
-    @Test(expected = CalculationException.class)
+    @Test
     public void testEmptyString() throws CalculationException {
-        calculator.calculate("");
+        try {
+            calculator.calculate("");
+            Assert.fail();
+        } catch (CalculationException e) {
+            Assert.assertEquals(0, e.getErrorPosition());
+        }
     }
 
-    @Test(expected = CalculationException.class)
-    public void testIllegalString() throws CalculationException {
-        calculator.calculate("budsfgjsgd12");
+    @Test
+    public void testTwoOperatorsSequence() throws CalculationException {
+        try {
+            calculator.calculate("1+*2");
+            Assert.fail();
+        } catch (CalculationException e) {
+            Assert.assertEquals(2, e.getErrorPosition());
+        }
     }
 
-    @Test(expected = CalculationException.class)
-    public void testIllegalExpression() throws CalculationException {
-        calculator.calculate("5**5");
-    }
-
-    @Test(expected = CalculationException.class)
+    @Test
     public void testWrongNumberOfOpeningBrackets() throws CalculationException {
-        System.out.println(calculator.calculate("5+((1+2)+3"));
+        try {
+            calculator.calculate("5+((1+2)+3");
+            Assert.fail();
+        } catch (CalculationException e) {
+            Assert.assertEquals(9, e.getErrorPosition());
+        }
     }
 
-    @Test(expected = CalculationException.class)
+    @Test
     public void testWrongNumberOfClosingBrackets() throws CalculationException {
-        System.out.println(calculator.calculate("5+(1))+1"));
+        try {
+            calculator.calculate("5+(1))+1");
+            Assert.fail();
+        } catch (CalculationException e) {
+            Assert.assertEquals(5, e.getErrorPosition());
+        }
+    }
+
+    @Test
+    public void testClosingBracketAfterOperator() throws CalculationException {
+        try {
+            calculator.calculate("(5+2+)");
+            Assert.fail();
+        } catch (CalculationException e) {
+            Assert.assertEquals(5, e.getErrorPosition());
+        }
+    }
+
+    @Test
+    public void testIllegalFunction() throws CalculationException {
+        try {
+            calculator.calculate("someFunction(1,2,3)");
+            Assert.fail();
+        } catch (CalculationException e) {
+            Assert.assertEquals(0, e.getErrorPosition());
+        }
     }
 
     @Test
