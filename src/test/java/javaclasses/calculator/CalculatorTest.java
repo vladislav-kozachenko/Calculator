@@ -179,6 +179,16 @@ public class CalculatorTest {
     }
 
     @Test
+    public void testCommaInGeneralBrackets() throws CalculationException {
+        try {
+            calculator.calculate("(10,50)");
+            Assert.fail();
+        } catch (CalculationException e) {
+            Assert.assertEquals(3, e.getErrorPosition());
+        }
+    }
+
+    @Test
     public void testInnerMaxFunctionWithExpression() throws CalculationException {
         Assert.assertEquals(11, calculator.calculate("1+max(2,5,max(6+4,5))"), 0.00001);
     }
