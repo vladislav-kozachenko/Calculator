@@ -9,6 +9,6 @@ import java.util.List;
  */
 public interface Function {
 
-    double execute(List<Double> args) throws CalculationException;
+    double execute(List<Double> args, ErrorHandler errorHandler) throws CalculationException;
 
 }

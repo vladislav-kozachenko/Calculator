@@ -1,5 +1,7 @@
 package javaclasses.calculator.impl;
 
+import javaclasses.calculator.CalculationException;
+
 /**
  * Represents parser for mathematical expression.
  */
@@ -11,5 +13,5 @@ public interface ExpressionParser {
      * @param context is the output where parsed token must be saved.
      * @return true if parsing was successful.
      */
-    boolean parse(ExpressionReader reader, EvaluationContext context);
+    boolean parse(ExpressionReader reader, EvaluationContext context) throws CalculationException;
 }

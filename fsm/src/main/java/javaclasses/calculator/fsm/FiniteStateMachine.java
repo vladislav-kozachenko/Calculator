@@ -14,7 +14,7 @@ public abstract class FiniteStateMachine<
 
     private final static Logger LOG = LoggerFactory.getLogger(FiniteStateMachine.class.getName());
 
-    public void start(State startState, Input input, Output output) throws TransitionError {
+    public void start(State startState, Input input, Output output) throws Exception {
 
         State currentState = startState;
 
@@ -34,7 +34,7 @@ public abstract class FiniteStateMachine<
         }
     }
 
-    private Optional<State> moveForward(Input input, Output output, State currentState) {
+    private Optional<State> moveForward(Input input, Output output, State currentState) throws Exception {
 
         final Set<State> transitions = getPossibleTransitions(currentState);
 
@@ -52,7 +52,7 @@ public abstract class FiniteStateMachine<
         return Optional.empty();
     }
 
-    protected abstract boolean acceptState(Input input, Output output, State nextState);
+    protected abstract boolean acceptState(Input input, Output output, State nextState) throws Exception;
 
     protected abstract boolean isFinishState(State currentState);
 

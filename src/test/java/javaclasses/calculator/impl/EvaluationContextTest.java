@@ -13,7 +13,9 @@ public class EvaluationContextTest {
 
     @Before
     public void createContext(){
-        context = new EvaluationContext();
+        context = new EvaluationContext(message -> {
+            throw new CalculationException("Unnable to parse.", -1);
+        });
     }
 
     @Test
@@ -22,9 +24,9 @@ public class EvaluationContextTest {
         Assert.assertEquals(10.5, context.getResult(), 0.00001);
     }
 
-    @Test
+    @Test(expected = CalculationException.class)
     public void testPushClosingBracket() throws CalculationException {
-        Assert.assertFalse(context.pushClosingBracket());
+        context.pushClosingBracket();
     }
 
     @Test

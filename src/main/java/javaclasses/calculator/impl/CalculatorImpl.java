@@ -54,22 +54,23 @@ public class CalculatorImpl extends FiniteStateMachine<EvaluationContext, Expres
      * @throws CalculationException if expression is in incorrect format.
      */
     @Override
-    public double calculate(String expression) throws CalculationException {
-        final EvaluationContext context = new EvaluationContext();
-        start(State.START, new ExpressionReader(prepareString(expression)), context);
-        try {
-            return context.getResult();
-        } catch (CalculationException e){
-            if (e.getErrorPosition() == -1){
-                throw new CalculationException("Incorrect expression format.", expression.length()-1);
-            } else {
-                throw e;
+    public double calculate(String expression) throws Exception {
+
+        ExpressionReader reader = new ExpressionReader(prepareString(expression));
+
+        final EvaluationContext context = new EvaluationContext(new ErrorHandler() {
+            @Override
+            public void raiseError(String message) throws CalculationException {
+                throw new CalculationException(message, reader.getParsePosition());
             }
-        }
+        });
+        start(State.START, reader, context);
+
+        return context.getResult();
     }
 
     @Override
-    protected boolean acceptState(ExpressionReader reader, EvaluationContext context, State nextState) {
+    protected boolean acceptState(ExpressionReader reader, EvaluationContext context, State nextState) throws CalculationException {
         final ExpressionParser parser = parserFactory.getParser(nextState);
         return parser.parse(reader, context);
     }

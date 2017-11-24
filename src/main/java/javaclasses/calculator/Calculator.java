@@ -11,6 +11,6 @@ public interface Calculator {
      * @param expression is a math expression may be solved.
      * @return the result of expression.
      */
-    double calculate(String expression) throws CalculationException;
+    double calculate(String expression) throws Exception;
 
 }

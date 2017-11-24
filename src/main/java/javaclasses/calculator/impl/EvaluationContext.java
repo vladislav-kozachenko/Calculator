@@ -10,6 +10,7 @@ import java.util.*;
 public class EvaluationContext {
 
     private Function nextFunction;
+    private ErrorHandler errorHandler;
 
     private final Deque<Double> operandStack = new ArrayDeque<>();
     private final Deque<BinaryOperator> operatorStack = new ArrayDeque<>();
@@ -17,6 +18,9 @@ public class EvaluationContext {
     private final Deque<Function> functionStack = new LinkedList<>();
     private final Deque<List<Double>> functionArguments = new ArrayDeque<>();
 
+    public EvaluationContext(ErrorHandler handler){
+        this.errorHandler = handler;
+    }
 
     /**
      * Added digit to operands stack.
@@ -37,7 +41,7 @@ public class EvaluationContext {
             popTopOperator();
         }
         if (!bracketStack.isEmpty() || operandStack.size() > 1){
-            throw new CalculationException("Incorrect expression format.", -1);
+            errorHandler.raiseError("Missed closing bracket.");
         }
         return operandStack.pop();
     }
@@ -78,29 +82,23 @@ public class EvaluationContext {
      * Evaluates the inner expression and add result into stack of operands.
      * @return true if evaluation is successful, false if expression doesn't have appropriate opening bracket.
      */
-    public boolean pushClosingBracket() {
+    public void pushClosingBracket() throws CalculationException {
         if (!bracketStack.isEmpty()) {
             while (isInBracket()) {
                 popTopOperator();
             }
             bracketStack.pop();
-            return !checkCurrentFunction() || closeFunction();
-        }
-        return false;
-    }
-
-    private boolean closeFunction(){
-        try {
-            addCurrentFunctionArgument(operandStack.pop());
-            operandStack.push(executeCurrentFunction());
-            return true;
-        } catch (CalculationException e) {
-            return false;
+            if (checkCurrentFunction()) {
+                executeCurrentFunction();
+            }
+        } else {
+            errorHandler.raiseError("Excess closing bracket.");
         }
     }
 
-    private double executeCurrentFunction() throws CalculationException {
-        return functionStack.pop().execute(functionArguments.pop());
+    private void executeCurrentFunction() throws CalculationException {
+        addCurrentFunctionArgument(operandStack.pop());
+        operandStack.push(functionStack.pop().execute(functionArguments.pop(), errorHandler));
     }
 
     public void pushFunction(Function function) {
@@ -108,16 +106,17 @@ public class EvaluationContext {
         functionArguments.push(new ArrayList<>());
     }
 
-    public boolean pushComma() {
+    public void pushComma() throws CalculationException {
         if (checkCurrentFunction()){
             while (!operatorStack.isEmpty()
                     && isInBracket()){
                 popTopOperator();
             }
             addCurrentFunctionArgument(operandStack.pop());
-            return true;
+        } else {
+            errorHandler.raiseError("It's imposible to use comma without function.");
         }
-        return false;
+
     }
 
     private boolean checkCurrentFunction(){

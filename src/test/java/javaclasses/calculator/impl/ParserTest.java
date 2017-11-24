@@ -21,7 +21,9 @@ public class ParserTest {
 
     @Before
     public void setContext(){
-        context = new EvaluationContext();
+        context = new EvaluationContext(message -> {
+            throw new CalculationException("Unnable to parse.", -1);
+        });
     }
 
     @Test
