@@ -1,10 +1,15 @@
 package javaclasses.calculator.impl;
 
 import javaclasses.calculator.CalculationException;
+import javaclasses.calculator.impl.operator.*;
 import javaclasses.calculator.impl.parser.ParserFactory;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 public class ParserTest {
 
@@ -35,35 +40,45 @@ public class ParserTest {
     public void testOperatorPlusParsing() throws CalculationException {
         ExpressionParser parser = factory.getParser(State.BINARY_OPERATOR);
         ExpressionReader reader = new ExpressionReader("+");
-        Assert.assertTrue(parser.parse(reader, context));
+        EvaluationContext evaluationContext = mock(EvaluationContext.class);
+        parser.parse(reader, evaluationContext);
+        verify(evaluationContext).pushBinaryOperator(any(PlusOperator.class));
     }
 
     @Test
     public void testOperatorMinusParsing() throws CalculationException {
         ExpressionParser parser = factory.getParser(State.BINARY_OPERATOR);
         ExpressionReader reader = new ExpressionReader("-");
-        Assert.assertTrue(parser.parse(reader, context));
+        EvaluationContext evaluationContext = mock(EvaluationContext.class);
+        parser.parse(reader, evaluationContext);
+        verify(evaluationContext).pushBinaryOperator(any(MinusOperator.class));
     }
 
     @Test
     public void testOperatorMultiplicationParsing() throws CalculationException {
         ExpressionParser parser = factory.getParser(State.BINARY_OPERATOR);
         ExpressionReader reader = new ExpressionReader("*");
-        Assert.assertTrue(parser.parse(reader, context));
+        EvaluationContext evaluationContext = mock(EvaluationContext.class);
+        parser.parse(reader, evaluationContext);
+        verify(evaluationContext).pushBinaryOperator(any(MultiplicationOperator.class));
     }
 
     @Test
     public void testOperatorDivisionParsing() throws CalculationException {
         ExpressionParser parser = factory.getParser(State.BINARY_OPERATOR);
         ExpressionReader reader = new ExpressionReader("/");
-        Assert.assertTrue(parser.parse(reader, context));
+        EvaluationContext evaluationContext = mock(EvaluationContext.class);
+        parser.parse(reader, evaluationContext);
+        verify(evaluationContext).pushBinaryOperator(any(DivisionOperator.class));
     }
 
     @Test
     public void testOperatorExponentiationParsing() throws CalculationException {
         ExpressionParser parser = factory.getParser(State.BINARY_OPERATOR);
         ExpressionReader reader = new ExpressionReader("^");
-        Assert.assertTrue(parser.parse(reader, context));
+        EvaluationContext evaluationContext = mock(EvaluationContext.class);
+        parser.parse(reader, evaluationContext);
+        verify(evaluationContext).pushBinaryOperator(any(ExponentiationOperator.class));
     }
 
     @Test
@@ -77,21 +92,23 @@ public class ParserTest {
     public void testOpeningBracketParsing() throws CalculationException {
         ExpressionParser parser = factory.getParser(State.OPENING_BRACKET);
         ExpressionReader reader = new ExpressionReader("(");
-        Assert.assertTrue(parser.parse(reader, context));
+        EvaluationContext evaluationContext = mock(EvaluationContext.class);
+        parser.parse(reader, evaluationContext);
+        verify(evaluationContext).pushOpeningBracket();
     }
 
     @Test
     public void testClosingBracketParsing() throws CalculationException {
         ExpressionParser parser = factory.getParser(State.CLOSING_BRACKET);
-        context.pushOpeningBracket();
-        context.pushNumber(1);
         ExpressionReader reader = new ExpressionReader(")");
-        Assert.assertTrue(parser.parse(reader, context));
+        EvaluationContext evaluationContext = mock(EvaluationContext.class);
+        parser.parse(reader, evaluationContext);
+        verify(evaluationContext).pushClosingBracket();
     }
 
     @Test(expected = IllegalStateException.class)
     public void testStart() throws CalculationException {
-        ExpressionParser parser = factory.getParser(State.START);
+        factory.getParser(State.START);
     }
 
 }
