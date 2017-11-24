@@ -24,7 +24,7 @@ public class BinaryOperatorFactory {
     }};
 
     /**
-     *
+     * Creates operator by its symbolic designation.
      * @param sign is a String which contains symbolic designation of operator.
      * @return instance of suitable binary operator.
      */

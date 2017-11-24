@@ -6,15 +6,13 @@ import javaclasses.calculator.impl.Function;
 
 import java.util.List;
 
-public class AverageFunction implements Function {
+public class BracketsFunction implements Function {
 
     @Override
     public double execute(List<Double> args, ErrorHandler errorHandler) throws CalculationException {
-        if (args.size() < 2){
-            errorHandler.raiseError("Function average requires at least 2 arguments.");
+        if (args.size() != 1){
+            errorHandler.raiseError("Argument separators are forbidden in a common brackets.");
         }
-
-        return new SumFunction().execute(args, errorHandler)/args.size();
-
+        return args.get(0);
     }
 }

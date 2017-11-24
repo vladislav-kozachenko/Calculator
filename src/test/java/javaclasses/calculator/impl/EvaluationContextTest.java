@@ -6,6 +6,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Locale;
+
 public class EvaluationContextTest {
 
     private EvaluationContext context;
@@ -13,6 +15,7 @@ public class EvaluationContextTest {
 
     @Before
     public void createContext(){
+        Locale.setDefault(new Locale("en", "US"));
         context = new EvaluationContext(message -> {
             throw new CalculationException(message, -1);
         });

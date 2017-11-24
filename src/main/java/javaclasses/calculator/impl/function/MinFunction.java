@@ -4,17 +4,16 @@ import javaclasses.calculator.CalculationException;
 import javaclasses.calculator.impl.ErrorHandler;
 import javaclasses.calculator.impl.Function;
 
+import java.util.Collections;
 import java.util.List;
 
-public class AverageFunction implements Function {
+public class MinFunction implements Function {
 
     @Override
     public double execute(List<Double> args, ErrorHandler errorHandler) throws CalculationException {
         if (args.size() < 2){
-            errorHandler.raiseError("Function average requires at least 2 arguments.");
+            errorHandler.raiseError("Function MIN requires at least 2 arguments.");
         }
-
-        return new SumFunction().execute(args, errorHandler)/args.size();
-
+        return Collections.min(args);
     }
 }

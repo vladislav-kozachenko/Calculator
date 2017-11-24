@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class FunctionTest {
 
@@ -19,6 +20,7 @@ public class FunctionTest {
 
     @Before
     public void setArguments(){
+        Locale.setDefault(new Locale("en", "US"));
         arguments = new ArrayList<>();
     }
 

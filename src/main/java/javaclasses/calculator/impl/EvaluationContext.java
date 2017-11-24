@@ -1,6 +1,7 @@
 package javaclasses.calculator.impl;
 
 import javaclasses.calculator.CalculationException;
+import javaclasses.calculator.impl.function.BracketsFunction;
 
 import java.util.*;
 
@@ -20,6 +21,7 @@ public class EvaluationContext {
 
     public EvaluationContext(ErrorHandler handler){
         this.errorHandler = handler;
+        nextFunction = new BracketsFunction();
     }
 
     /**
@@ -63,7 +65,7 @@ public class EvaluationContext {
     public void pushBinaryOperator(BinaryOperator operator) {
         while (!operatorStack.isEmpty()
                 && operator.compareTo(operatorStack.peek()) <= 0
-                && (bracketStack.isEmpty() || isInBracket())){
+                && (bracketStack.isEmpty() || isInBrackets())){
             popTopOperator();
         }
         operatorStack.push(operator);
@@ -71,11 +73,13 @@ public class EvaluationContext {
 
     /**
      * Saves the position of opening bracket.
+     * Adds last function to function stack.
      */
     public void pushOpeningBracket() {
         bracketStack.push(operatorStack.size());
         functionStack.push(nextFunction);
-        nextFunction = null;
+        functionArguments.push(new ArrayList<>());
+        nextFunction = new BracketsFunction();
     }
 
     /**
@@ -83,20 +87,18 @@ public class EvaluationContext {
      */
     public void pushClosingBracket() throws CalculationException {
         if (!bracketStack.isEmpty()) {
-            while (isInBracket()) {
+            while (isInBrackets()) {
                 popTopOperator();
             }
             bracketStack.pop();
-            if (checkCurrentFunction()) {
-                executeCurrentFunction();
-            }
+            executeCurrentFunction();
         } else {
-            errorHandler.raiseError("Excess closing bracket.");
+            errorHandler.raiseError("Missing opening bracket.");
         }
     }
 
     private void executeCurrentFunction() throws CalculationException {
-        if (operandStack.size() > operatorStack.size()) {
+        if (isFunctionWithoutArgument()) {
             addCurrentFunctionArgument(operandStack.pop());
         }
         operandStack.push(functionStack.pop().execute(functionArguments.pop(), errorHandler));
@@ -104,31 +106,26 @@ public class EvaluationContext {
 
     public void pushFunction(Function function) {
         nextFunction = function;
-        functionArguments.push(new ArrayList<>());
     }
 
-    public void pushComma() throws CalculationException {
-        if (checkCurrentFunction()){
-            while (!operatorStack.isEmpty()
-                    && isInBracket()){
-                popTopOperator();
-            }
-            addCurrentFunctionArgument(operandStack.pop());
-        } else {
-            errorHandler.raiseError("It's imposible to use comma without function.");
+    public void pushArgumentSeparator() throws CalculationException {
+        while (!operatorStack.isEmpty()
+                && isInBrackets()) {
+            popTopOperator();
         }
+        addCurrentFunctionArgument(operandStack.pop());
 
-    }
-
-    private boolean checkCurrentFunction(){
-        return !functionStack.isEmpty() && functionStack.peek() != null;
     }
 
     private void addCurrentFunctionArgument(double argument){
         functionArguments.peek().add(argument);
     }
 
-    private boolean isInBracket(){
+    private boolean isInBrackets(){
         return !bracketStack.isEmpty() && operatorStack.size() > bracketStack.peek();
+    }
+
+    private boolean isFunctionWithoutArgument() {
+        return operandStack.size() > operatorStack.size();
     }
 }

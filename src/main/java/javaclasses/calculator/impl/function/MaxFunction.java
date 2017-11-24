@@ -12,7 +12,7 @@ public class MaxFunction implements Function {
     @Override
     public double execute(List<Double> args, ErrorHandler errorHandler) throws CalculationException {
         if (args.size() < 2){
-            errorHandler.raiseError("Function MAX gets as least 2 arguments.");
+            errorHandler.raiseError("Function MAX requires at least 2 arguments.");
         }
         return Collections.max(args);
     }

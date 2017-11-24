@@ -13,7 +13,7 @@ public class SumFunction implements Function {
     public double execute(List<Double> args, ErrorHandler errorHandler) throws CalculationException {
 
         if (args.size() < 2){
-            errorHandler.raiseError("Function SUM gets as least 2 arguments.");
+            errorHandler.raiseError("Function SUM requires at least 2 arguments.");
         }
 
 

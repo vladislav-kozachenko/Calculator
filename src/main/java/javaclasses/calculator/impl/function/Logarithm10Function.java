@@ -11,7 +11,7 @@ public class Logarithm10Function implements Function {
     @Override
     public double execute(List<Double> args, ErrorHandler errorHandler) throws CalculationException {
         if (args.size() != 1){
-            errorHandler.raiseError("Logarithm function needs 1 argument. Used " + args.size() + " arguments.");
+            errorHandler.raiseError("Logarithm function requires 1 argument. Used " + args.size() + " arguments.");
         }
         return Math.log10(args.get(0));
     }

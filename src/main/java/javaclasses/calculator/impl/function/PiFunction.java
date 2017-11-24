@@ -11,7 +11,7 @@ public class PiFunction implements Function {
     @Override
     public double execute(List<Double> args, ErrorHandler errorHandler) throws CalculationException {
         if (args.size() != 0){
-            errorHandler.raiseError("Function PI gets no arguments.");
+            errorHandler.raiseError("Arguments are forbidden in the PI function.");
         }
         return Math.PI;
     }

@@ -11,6 +11,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Locale;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -22,6 +24,7 @@ public class ParserTest {
 
     @Before
     public void setContext(){
+        Locale.setDefault(new Locale("en", "US"));
         context = new EvaluationContext(message -> {
             throw new CalculationException("Unnable to parse.", -1);
         });

@@ -5,7 +5,7 @@ import javaclasses.calculator.impl.EvaluationContext;
 import javaclasses.calculator.impl.ExpressionParser;
 import javaclasses.calculator.impl.ExpressionReader;
 
-public class CommaParser implements ExpressionParser {
+public class ArgumentSeparatorParser implements ExpressionParser {
     @Override
     public boolean parse(ExpressionReader reader, EvaluationContext context) throws CalculationException {
 
@@ -13,7 +13,7 @@ public class CommaParser implements ExpressionParser {
 
         if (expression.startsWith(",")) {
 
-            context.pushComma();
+            context.pushArgumentSeparator();
             reader.incrementParsePosition(1);
             return true;
         }

@@ -2,11 +2,19 @@ package javaclasses.calculator;
 
 import javaclasses.calculator.impl.CalculatorImpl;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Locale;
 
 public class CalculatorTest {
 
     private final Calculator calculator = new CalculatorImpl();
+
+    @Before
+    public void setDefaultLocale() {
+        Locale.setDefault(new Locale("en", "US"));
+    }
 
     @Test
     public void testOneInteger() throws Exception {
@@ -181,10 +189,10 @@ public class CalculatorTest {
     @Test
     public void testCommaInGeneralBrackets() throws Exception {
         try {
-            calculator.calculate("(10,50)");
+            calculator.calculate("(10, 50)");
             Assert.fail();
         } catch (CalculationException e) {
-            Assert.assertEquals(3, e.getErrorPosition());
+            Assert.assertEquals(7, e.getErrorPosition());
         }
     }
 

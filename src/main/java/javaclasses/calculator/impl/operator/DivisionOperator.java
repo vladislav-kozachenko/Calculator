@@ -6,10 +6,6 @@ public class DivisionOperator extends AbstractBinaryOperator {
         super(priority);
     }
 
-    /**
-     *
-     * @return division of leftOperand on rightOperand
-     */
     @Override
     public double evaluate(double leftOperand, double rightOperand) {
         return leftOperand / rightOperand;

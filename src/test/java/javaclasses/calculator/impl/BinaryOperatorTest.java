@@ -3,11 +3,20 @@ package javaclasses.calculator.impl;
 import javaclasses.calculator.CalculationException;
 import javaclasses.calculator.impl.operator.BinaryOperatorFactory;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Locale;
 
 public class BinaryOperatorTest {
 
     private BinaryOperatorFactory factory = new BinaryOperatorFactory();
+
+    @Before
+    public void setDefaultLocale() {
+        Locale.setDefault(new Locale("en", "US"));
+    }
+
 
     @Test
     public void testOperatorPlus(){

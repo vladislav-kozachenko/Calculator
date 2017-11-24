@@ -15,7 +15,28 @@ import static javaclasses.calculator.impl.State.BINARY_OPERATOR;
 import static javaclasses.calculator.impl.State.NUMBER;
 
 /**
- * Implements a calculator that accepts String argument and produces a double result.
+ * Implements a calculator that accepts mathematical expression in a String argument and produces a double result.<br>
+ * Method calculate evaluates the received expression.
+ *
+ * Input can contain: numbers, brackets, mathematical operators.
+ * Whitespaces are allowed. Calculator is not case sensitive.
+ * Operators can be used:
+ * <li>
+ * <ul>+ plus</ul>
+ * <ul>- minus</ul>
+ * <ul>* multiplication</ul>
+ * <ul>/ division</ul>
+ * <ul>^ exponentiation</ul>
+ * </li>
+ * Functions are allowed:
+ * <li>
+ * <ul>max(double... args);</ul>
+ * <ul>min(double... args);</ul>
+ * <ul>sum(double... args);</ul>
+ * <ul>avg(double... args);</ul>
+ * <ul>log10(double argument);</ul>
+ * <ul>pi();</ul>
+ * </li>
  */
 public class CalculatorImpl extends FiniteStateMachine<EvaluationContext, ExpressionReader, State, CalculationException> implements Calculator {
 
@@ -33,22 +54,6 @@ public class CalculatorImpl extends FiniteStateMachine<EvaluationContext, Expres
 
     /**
      * Calculates mathematical expression from string.
-     * Input can contain: numbers, brackets, mathematical operators.
-     * Whitespaces are allowed. Calculator is not case sensitive.
-     * Operators can be used:
-     * <li>
-     * <ul>+ plus</ul>
-     * <ul>- minus</ul>
-     * <ul>* multiplication</ul>
-     * <ul>/ division</ul>
-     * <ul>^ exponentiation</ul>
-     * </li>
-     * Functions are allowed:
-     * <li>
-     * <ul>max();</ul>
-     * <ul>sum();</ul>
-     * <ul>avg();</ul>
-     * </li>
      * @param expression is a math expression may be solved.
      * @return the result of expression evaluation (double).
      * @throws CalculationException if expression is in incorrect format.
@@ -58,11 +63,8 @@ public class CalculatorImpl extends FiniteStateMachine<EvaluationContext, Expres
 
         ExpressionReader reader = new ExpressionReader(prepareString(expression));
 
-        final EvaluationContext context = new EvaluationContext(new ErrorHandler() {
-            @Override
-            public void raiseError(String message) throws CalculationException {
-                throw new CalculationException(message, reader.getParsePosition());
-            }
+        final EvaluationContext context = new EvaluationContext(message -> {
+            throw new CalculationException(message, reader.getParsePosition());
         });
         start(State.START, reader, context);
 
@@ -91,6 +93,6 @@ public class CalculatorImpl extends FiniteStateMachine<EvaluationContext, Expres
     }
 
     private String prepareString(String source){
-        return source.replaceAll("\\s+","").toLowerCase();
+        return source.toLowerCase();
     }
 }

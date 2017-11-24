@@ -1,13 +1,15 @@
 package javaclasses.calculator;
 
 /**
- * Public API.
- * Represents a calculator that accepts String argument and produces a double result.
+ * Represents a calculator that have method calculate.
+ * Accepts mathematical expression in a String argument and produces a double result.
+ *
+ * @author Kozachenko
  */
 public interface Calculator {
 
     /**
-     *
+     * Evaluates the received mathematical expression.
      * @param expression is a math expression may be solved.
      * @return the result of expression.
      */
