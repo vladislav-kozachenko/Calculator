@@ -45,6 +45,12 @@ public class FunctionTest {
         Assert.assertEquals(2, factory.getFunction("avg").execute(arguments, errorHandler), 0.0001);
     }
 
+    @Test(expected = CalculationException.class)
+    public void testAverageFunctionWithOneArgument() throws CalculationException {
+        arguments.add(1.0);
+        factory.getFunction("avg").execute(arguments, errorHandler);
+    }
+
     @Test
     public void testLog10Function() throws CalculationException {
         arguments.add(100.0);
@@ -53,8 +59,13 @@ public class FunctionTest {
 
     @Test
     public void testPiFunction() throws CalculationException {
-        arguments.add(100.0);
         Assert.assertEquals(Math.PI, factory.getFunction("pi").execute(arguments, errorHandler), 0.0001);
+    }
+
+    @Test(expected = CalculationException.class)
+    public void testPiFunctionWithArgument() throws CalculationException {
+        arguments.add(100.0);
+        factory.getFunction("pi").execute(arguments, errorHandler);
     }
 
     @Test

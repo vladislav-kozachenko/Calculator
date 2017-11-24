@@ -200,7 +200,7 @@ public class CalculatorTest {
 
     @Test
     public void testCaseSensitivity() throws Exception {
-        Assert.assertEquals(0, calculator.calculate("MAX(2,5)-SUM(2+3)"), 0.00001);
+        Assert.assertEquals(0, calculator.calculate("MAX(2,5)-SUM(2,3)"), 0.00001);
     }
 
     @Test
@@ -211,6 +211,16 @@ public class CalculatorTest {
     @Test
     public void testPiFunction() throws Exception {
         Assert.assertEquals(Math.PI, calculator.calculate("pi()"), 0.00001);
+    }
+
+    @Test
+    public void testPiFunctionWithArgument() throws Exception {
+        try {
+            calculator.calculate("pi(10,50)");
+            Assert.fail();
+        } catch (CalculationException e) {
+            Assert.assertEquals(8, e.getErrorPosition());
+        }
     }
 
 }

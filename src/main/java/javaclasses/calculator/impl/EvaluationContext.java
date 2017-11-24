@@ -80,7 +80,6 @@ public class EvaluationContext {
 
     /**
      * Evaluates the inner expression and add result into stack of operands.
-     * @return true if evaluation is successful, false if expression doesn't have appropriate opening bracket.
      */
     public void pushClosingBracket() throws CalculationException {
         if (!bracketStack.isEmpty()) {
