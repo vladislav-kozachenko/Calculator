@@ -1,6 +1,7 @@
 package javaclasses.calculator.impl;
 
 import javaclasses.calculator.CalculationException;
+import javaclasses.calculator.impl.function.BracketsFunction;
 
 import java.util.*;
 
@@ -20,6 +21,7 @@ public class EvaluationContext {
 
     public EvaluationContext(ErrorHandler handler){
         this.errorHandler = handler;
+        nextFunction = new BracketsFunction();
     }
 
     /**
@@ -75,7 +77,8 @@ public class EvaluationContext {
     public void pushOpeningBracket() {
         bracketStack.push(operatorStack.size());
         functionStack.push(nextFunction);
-        nextFunction = null;
+        functionArguments.push(new ArrayList<>());
+        nextFunction = new BracketsFunction();
     }
 
     /**
@@ -104,7 +107,6 @@ public class EvaluationContext {
 
     public void pushFunction(Function function) {
         nextFunction = function;
-        functionArguments.push(new ArrayList<>());
     }
 
     public void pushComma() throws CalculationException {

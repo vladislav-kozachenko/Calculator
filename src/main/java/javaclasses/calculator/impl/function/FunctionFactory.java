@@ -10,6 +10,7 @@ public class FunctionFactory {
 
     private final Map<String, Function> functions = new HashMap<String, Function>() {{
         put("max", new MaxFunction());
+        put("min", new MinFunction());
         put("sum", new SumFunction());
         put("avg", new AverageFunction());
         put("log10", new Logarithm10Function());
