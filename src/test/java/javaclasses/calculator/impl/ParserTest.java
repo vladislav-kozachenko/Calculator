@@ -1,6 +1,9 @@
 package javaclasses.calculator.impl;
 
 import javaclasses.calculator.CalculationException;
+import javaclasses.calculator.impl.function.AverageFunction;
+import javaclasses.calculator.impl.function.MaxFunction;
+import javaclasses.calculator.impl.function.SumFunction;
 import javaclasses.calculator.impl.operator.*;
 import javaclasses.calculator.impl.parser.ParserFactory;
 import org.junit.Assert;
@@ -110,5 +113,33 @@ public class ParserTest {
     public void testStart() throws CalculationException {
         factory.getParser(State.START);
     }
+
+    @Test
+    public void testSumFunctionParsing() throws CalculationException {
+        ExpressionParser parser = factory.getParser(State.FUNCTION_NAME);
+        ExpressionReader reader = new ExpressionReader("sum");
+        EvaluationContext evaluationContext = mock(EvaluationContext.class);
+        parser.parse(reader, evaluationContext);
+        verify(evaluationContext).pushFunction(any(SumFunction.class));
+    }
+
+    @Test
+    public void testMaxFunctionParsing() throws CalculationException {
+        ExpressionParser parser = factory.getParser(State.FUNCTION_NAME);
+        ExpressionReader reader = new ExpressionReader("max");
+        EvaluationContext evaluationContext = mock(EvaluationContext.class);
+        parser.parse(reader, evaluationContext);
+        verify(evaluationContext).pushFunction(any(MaxFunction.class));
+    }
+
+    @Test
+    public void testAverageFunctionParsing() throws CalculationException {
+        ExpressionParser parser = factory.getParser(State.FUNCTION_NAME);
+        ExpressionReader reader = new ExpressionReader("avg");
+        EvaluationContext evaluationContext = mock(EvaluationContext.class);
+        parser.parse(reader, evaluationContext);
+        verify(evaluationContext).pushFunction(any(AverageFunction.class));
+    }
+
 
 }
