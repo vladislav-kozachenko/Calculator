@@ -52,6 +52,12 @@ public class FunctionTest {
     }
 
     @Test
+    public void testPiFunction() throws CalculationException {
+        arguments.add(100.0);
+        Assert.assertEquals(Math.PI, factory.getFunction("pi").execute(arguments, errorHandler), 0.0001);
+    }
+
+    @Test
     public void testLog10FunctionWithSeveralArguments() throws CalculationException {
         arguments.add(100.0);
         arguments.add(100.0);

@@ -13,6 +13,7 @@ public class FunctionFactory {
         put("sum", new SumFunction());
         put("avg", new AverageFunction());
         put("log10", new Logarithm10Function());
+        put("pi", new PiFunction());
     }};
 
     public Function getFunction(String name){

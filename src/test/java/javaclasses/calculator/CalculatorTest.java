@@ -208,4 +208,9 @@ public class CalculatorTest {
         Assert.assertEquals(0, calculator.calculate("1 + 2 - 3"), 0.00001);
     }
 
+    @Test
+    public void testPiFunction() throws Exception {
+        Assert.assertEquals(Math.PI, calculator.calculate("pi()"), 0.00001);
+    }
+
 }

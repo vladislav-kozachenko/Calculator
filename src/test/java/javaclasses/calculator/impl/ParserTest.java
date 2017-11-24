@@ -3,6 +3,7 @@ package javaclasses.calculator.impl;
 import javaclasses.calculator.CalculationException;
 import javaclasses.calculator.impl.function.AverageFunction;
 import javaclasses.calculator.impl.function.MaxFunction;
+import javaclasses.calculator.impl.function.PiFunction;
 import javaclasses.calculator.impl.function.SumFunction;
 import javaclasses.calculator.impl.operator.*;
 import javaclasses.calculator.impl.parser.ParserFactory;
@@ -143,5 +144,13 @@ public class ParserTest {
         verify(evaluationContext).pushFunction(any(AverageFunction.class));
     }
 
+    @Test
+    public void testPiFunctionParsing() throws CalculationException {
+        ExpressionParser parser = factory.getParser(State.FUNCTION_NAME);
+        ExpressionReader reader = new ExpressionReader("pi");
+        EvaluationContext evaluationContext = mock(EvaluationContext.class);
+        parser.parse(reader, evaluationContext);
+        verify(evaluationContext).pushFunction(any(PiFunction.class));
+    }
 
 }

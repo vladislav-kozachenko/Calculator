@@ -97,7 +97,9 @@ public class EvaluationContext {
     }
 
     private void executeCurrentFunction() throws CalculationException {
-        addCurrentFunctionArgument(operandStack.pop());
+        if (operandStack.size() > operatorStack.size()) {
+            addCurrentFunctionArgument(operandStack.pop());
+        }
         operandStack.push(functionStack.pop().execute(functionArguments.pop(), errorHandler));
     }
 
