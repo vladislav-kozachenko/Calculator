@@ -16,8 +16,8 @@ public class EvaluationContext {
     private final Deque<Double> operandStack = new ArrayDeque<>();
     private final Deque<BinaryOperator> operatorStack = new ArrayDeque<>();
     private final Deque<Integer> bracketStack = new ArrayDeque<>();
-    private final Deque<Function> functionStack = new LinkedList<>();
-    private final Deque<List<Double>> functionArguments = new ArrayDeque<>();
+
+    private final Deque<FunctionContext> functions = new ArrayDeque<>();
 
     public EvaluationContext(ErrorHandler handler){
         this.errorHandler = handler;
@@ -77,8 +77,7 @@ public class EvaluationContext {
      */
     public void pushOpeningBracket() {
         bracketStack.push(operatorStack.size());
-        functionStack.push(nextFunction);
-        functionArguments.push(new ArrayList<>());
+        functions.push(new FunctionContext(nextFunction));
         nextFunction = new BracketsFunction();
     }
 
@@ -101,7 +100,7 @@ public class EvaluationContext {
         if (isFunctionWithoutArgument()) {
             addCurrentFunctionArgument(operandStack.pop());
         }
-        operandStack.push(functionStack.pop().execute(functionArguments.pop(), errorHandler));
+        operandStack.push(functions.pop().execute(errorHandler));
     }
 
     public void pushFunction(Function function) {
@@ -118,7 +117,7 @@ public class EvaluationContext {
     }
 
     private void addCurrentFunctionArgument(double argument){
-        functionArguments.peek().add(argument);
+        functions.peek().addArgument(argument);
     }
 
     private boolean isInBrackets(){

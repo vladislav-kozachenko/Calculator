@@ -19,7 +19,7 @@ import static javaclasses.calculator.impl.State.NUMBER;
  * Method calculate evaluates the received expression.
  *
  * Input can contain: numbers, brackets, mathematical operators.
- * Whitespaces are allowed. Calculator is not case sensitive.
+ * Whitespaces are allowed. Calculator is not case sensitive.<br>
  * Operators can be used:
  * <li>
  * <ul>+ plus</ul>
