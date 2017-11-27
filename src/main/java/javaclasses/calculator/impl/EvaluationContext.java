@@ -1,7 +1,10 @@
 package javaclasses.calculator.impl;
 
 import javaclasses.calculator.CalculationException;
+import javaclasses.calculator.fsm.FiniteStateMachine;
 import javaclasses.calculator.impl.function.BracketsFunction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -9,6 +12,8 @@ import java.util.*;
  * Context for expression evaluation. Contains temporary storage needed for evaluation.
  */
 public class EvaluationContext {
+
+    private final static Logger LOG = LoggerFactory.getLogger(FiniteStateMachine.class.getName());
 
     private Function nextFunction;
     private ErrorHandler errorHandler;
@@ -41,8 +46,13 @@ public class EvaluationContext {
         while (!operatorStack.isEmpty()) {
             popTopOperator();
         }
-        if (!functionStack.isEmpty() || operandStack.size() > 1){
+        if (!functionStack.isEmpty()){
             errorHandler.raiseError("Missed closing bracket.");
+        } else if (operandStack.size() > 1) {
+            if (LOG.isErrorEnabled()){
+                LOG.error("Operands remained on the stack.");
+            }
+            errorHandler.raiseError("Internal error.");
         }
         return operandStack.pop();
     }
