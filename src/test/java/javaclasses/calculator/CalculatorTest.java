@@ -225,4 +225,19 @@ public class CalculatorTest {
         }
     }
 
+    @Test
+    public void testVariable() throws Exception {
+        Assert.assertEquals(2, calculator.calculate("a=1;b=1+a;b"), 0.00001);
+    }
+
+    @Test
+    public void testVariableWithFunction() throws Exception {
+        Assert.assertEquals(3, calculator.calculate("a=max(1,2,3);a"), 0.00001);
+    }
+
+    @Test
+    public void testSecondAssignmentIntoVariable() throws Exception {
+        Assert.assertEquals(5, calculator.calculate("a=max(1,2,3);a=5;a"), 0.00001);
+    }
+
 }

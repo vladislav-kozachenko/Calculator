@@ -16,7 +16,9 @@ public class EvaluationContext {
     private final static Logger LOG = LoggerFactory.getLogger(FiniteStateMachine.class.getName());
 
     private Function nextFunction;
+    private String nextVariable;
     private ErrorHandler errorHandler;
+    private Map<String, Double> variables = new HashMap<>();
 
     private final Deque<Double> operandStack = new ArrayDeque<>();
     private final Deque<BinaryOperator> operatorStack = new ArrayDeque<>();
@@ -133,5 +135,21 @@ public class EvaluationContext {
 
     private boolean isFunctionWithoutArgument() {
         return operandStack.size() > operatorStack.size();
+    }
+
+    public void declareVariable(String variableName) {
+        nextVariable = variableName;
+    }
+
+    public void saveVariable() throws CalculationException {
+        variables.put(nextVariable, getResult());
+    }
+
+    public Set<String> getVariableNames() {
+        return variables.keySet();
+    }
+
+    public void pushVariable(String key) {
+        pushNumber(variables.get(key));
     }
 }

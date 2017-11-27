@@ -17,6 +17,9 @@ public class ParserFactory {
         put(CLOSING_BRACKET, new ClosingBracketParser());
         put(FUNCTION_NAME, new FunctionParser());
         put(ARGUMENT_SEPARATOR, new ArgumentSeparatorParser());
+        put(VARIABLE_ASSIGNMENT, new VariableAssignmentParser());
+        put(DELIMITER, new DelimiterParser());
+        put(VARIABLE_READING, new VariableReadingParser());
         put(FINISH, new EndOfExpressionParser());
     }};
 
