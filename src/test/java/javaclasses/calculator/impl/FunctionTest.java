@@ -11,7 +11,7 @@ import java.util.List;
 
 public class FunctionTest {
 
-    final FunctionFactory factory = new FunctionFactory();
+    private final FunctionFactory factory = new FunctionFactory();
     private List<Double> arguments;
     private final ErrorHandler errorHandler = message -> {
         throw new CalculationException(message, -1);

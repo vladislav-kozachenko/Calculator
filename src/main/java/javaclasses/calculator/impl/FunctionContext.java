@@ -12,13 +12,15 @@ public class FunctionContext {
 
     private Function function;
     private List<Double> arguments = new ArrayList<>();
+    private int bracketPosition;
 
     public Function getFunction() {
         return function;
     }
 
-    public FunctionContext(Function function) {
+    public FunctionContext(Function function, int bracketPosition) {
         this.function = function;
+        this.bracketPosition = bracketPosition;
     }
 
     public void addArgument(double argument){
@@ -27,5 +29,9 @@ public class FunctionContext {
 
     public double execute(ErrorHandler errorHandler) throws CalculationException {
         return function.execute(arguments, errorHandler);
+    }
+
+    public int getBracketPosition() {
+        return bracketPosition;
     }
 }

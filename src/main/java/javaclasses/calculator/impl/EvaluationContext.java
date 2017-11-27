@@ -15,9 +15,8 @@ public class EvaluationContext {
 
     private final Deque<Double> operandStack = new ArrayDeque<>();
     private final Deque<BinaryOperator> operatorStack = new ArrayDeque<>();
-    private final Deque<Integer> bracketStack = new ArrayDeque<>();
 
-    private final Deque<FunctionContext> functions = new ArrayDeque<>();
+    private final Deque<FunctionContext> functionStack = new ArrayDeque<>();
 
     public EvaluationContext(ErrorHandler handler){
         this.errorHandler = handler;
@@ -42,7 +41,7 @@ public class EvaluationContext {
         while (!operatorStack.isEmpty()) {
             popTopOperator();
         }
-        if (!bracketStack.isEmpty() || operandStack.size() > 1){
+        if (!functionStack.isEmpty() || operandStack.size() > 1){
             errorHandler.raiseError("Missed closing bracket.");
         }
         return operandStack.pop();
@@ -65,7 +64,7 @@ public class EvaluationContext {
     public void pushBinaryOperator(BinaryOperator operator) {
         while (!operatorStack.isEmpty()
                 && operator.compareTo(operatorStack.peek()) <= 0
-                && (bracketStack.isEmpty() || isInBrackets())){
+                && (functionStack.isEmpty() || isInBrackets())){
             popTopOperator();
         }
         operatorStack.push(operator);
@@ -76,8 +75,7 @@ public class EvaluationContext {
      * Adds last function to function stack.
      */
     public void pushOpeningBracket() {
-        bracketStack.push(operatorStack.size());
-        functions.push(new FunctionContext(nextFunction));
+        functionStack.push(new FunctionContext(nextFunction, operatorStack.size()));
         nextFunction = new BracketsFunction();
     }
 
@@ -85,14 +83,13 @@ public class EvaluationContext {
      * Evaluates the inner expression and add result into stack of operands.
      */
     public void pushClosingBracket() throws CalculationException {
-        if (!bracketStack.isEmpty()) {
+        if (!functionStack.isEmpty()) {
             while (isInBrackets()) {
                 popTopOperator();
             }
-            bracketStack.pop();
             executeCurrentFunction();
         } else {
-            errorHandler.raiseError("Missing opening bracket.");
+            errorHandler.raiseError("Missed opening bracket.");
         }
     }
 
@@ -100,7 +97,7 @@ public class EvaluationContext {
         if (isFunctionWithoutArgument()) {
             addCurrentFunctionArgument(operandStack.pop());
         }
-        operandStack.push(functions.pop().execute(errorHandler));
+        operandStack.push(functionStack.pop().execute(errorHandler));
     }
 
     public void pushFunction(Function function) {
@@ -117,11 +114,11 @@ public class EvaluationContext {
     }
 
     private void addCurrentFunctionArgument(double argument){
-        functions.peek().addArgument(argument);
+        functionStack.peek().addArgument(argument);
     }
 
     private boolean isInBrackets(){
-        return !bracketStack.isEmpty() && operatorStack.size() > bracketStack.peek();
+        return !functionStack.isEmpty() && operatorStack.size() > functionStack.peek().getBracketPosition();
     }
 
     private boolean isFunctionWithoutArgument() {
