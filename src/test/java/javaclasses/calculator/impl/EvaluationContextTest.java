@@ -21,7 +21,7 @@ public class EvaluationContextTest {
     @Test
     public void testPushNumber() throws CalculationException {
         context.pushNumber(10.5);
-        Assert.assertEquals(10.5, context.getResult(), 0.00001);
+        Assert.assertEquals(10.5, context.getResult().get(), 0.00001);
     }
 
     @Test(expected = CalculationException.class)
@@ -34,7 +34,7 @@ public class EvaluationContextTest {
         context.pushNumber(10.5);
         context.pushBinaryOperator(factory.getBinaryOperator("+"));
         context.pushNumber(10.5);
-        Assert.assertEquals(21, context.getResult(), 0.00001);
+        Assert.assertEquals(21, context.getResult().get(), 0.00001);
     }
 
     @Test(expected = CalculationException.class)

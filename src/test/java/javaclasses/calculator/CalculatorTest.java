@@ -5,6 +5,11 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
+import static org.junit.Assert.assertEquals;
+
 
 public class CalculatorTest {
 
@@ -12,82 +17,82 @@ public class CalculatorTest {
 
     @Test
     public void testOneInteger() throws Exception {
-        Assert.assertEquals(10, calculator.calculate("10"), 0.00001);
+        assertEquals(10, calculator.calculate("10").get(), 0.00001);
     }
 
     @Test
     public void testUnaryMinus() throws Exception {
-        Assert.assertEquals(-10, calculator.calculate("-10"), 0.00001);
+        assertEquals(-10, calculator.calculate("-10").get(), 0.00001);
     }
 
     @Test
     public void testOneDouble() throws Exception {
-        Assert.assertEquals(10.01, calculator.calculate("10.01"), 0.00001);
+        assertEquals(10.01, calculator.calculate("10.01").get(), 0.00001);
     }
 
     @Test
     public void testOperatorPlus() throws Exception {
-        Assert.assertEquals(10, calculator.calculate("2+8"), 0.00001);
+        assertEquals(10, calculator.calculate("2+8").get(), 0.00001);
     }
 
     @Test
     public void testOperatorMinus() throws Exception {
-        Assert.assertEquals(-6, calculator.calculate("2-8"), 0.00001);
+        assertEquals(-6, calculator.calculate("2-8").get(), 0.00001);
     }
 
     @Test
     public void testUnaryMinusInExpression() throws Exception {
-        Assert.assertEquals(6, calculator.calculate("-2+8"), 0.00001);
+        assertEquals(6, calculator.calculate("-2+8").get(), 0.00001);
     }
 
     @Test
     public void testOperatorMultiplication() throws Exception {
-        Assert.assertEquals(16, calculator.calculate("2*8"), 0.00001);
+        assertEquals(16, calculator.calculate("2*8").get(), 0.00001);
     }
 
     @Test
     public void testOperatorDivision() throws Exception {
-        Assert.assertEquals(4, calculator.calculate("8/2"), 0.00001);
+        assertEquals(4, calculator.calculate("8/2").get(), 0.00001);
     }
 
     @Test
     public void testSeveralMinus() throws Exception {
-        Assert.assertEquals(6, calculator.calculate("10-2-2"), 0.00001);
+        assertEquals(6, calculator.calculate("10-2-2").get(), 0.00001);
     }
 
     @Test
     public void testOperatorsPriority() throws Exception {
-        Assert.assertEquals(6, calculator.calculate("2+2*2"), 0.00001);
+        assertEquals(6, calculator.calculate("2+2*2").get(), 0.00001);
     }
 
     @Test
     public void testOperatorExponentiation() throws Exception {
-        Assert.assertEquals(16, calculator.calculate("4^2"), 0.00001);
+        assertEquals(16, calculator.calculate("4^2").get(), 0.00001);
     }
 
     @Test
     public void testOperatorPlusAndExponentiation() throws Exception {
-        Assert.assertEquals(21, calculator.calculate("5+4^2"), 0.00001);
+        assertEquals(21, calculator.calculate("5+4^2").get(), 0.00001);
     }
 
     @Test
     public void testBrackets() throws Exception {
-        Assert.assertEquals(18, calculator.calculate("(5+4)*2"), 0.00001);
+        assertEquals(18, calculator.calculate("(5+4)*2").get(), 0.00001);
     }
 
     @Test
     public void testUnaryMinusInBrackets() throws Exception {
-        Assert.assertEquals(-25, calculator.calculate("5*(-5)"), 0.00001);
+        assertEquals(-25, calculator.calculate("5*(-5)").get(), 0.00001);
     }
 
     @Test
     public void testPriorityInBrackets() throws Exception {
-        Assert.assertEquals(20, calculator.calculate("2*(10+5*2)/2"), 0.00001);
+        assertEquals(20, calculator.calculate("2*(10+5*2)/2").get(), 0.00001);
     }
 
     @Test
     public void testInnerBrackets() throws Exception {
-        Assert.assertEquals(10, calculator.calculate("2*(10+5*(2-2))/2"), 0.00001);
+        assertEquals(10, calculator.calculate("2*(10+5*(2-2))/2").get(), 0.00001);
     }
 
     @Test
@@ -96,7 +101,7 @@ public class CalculatorTest {
             calculator.calculate("");
             Assert.fail();
         } catch (CalculationException e) {
-            Assert.assertEquals(0, e.getErrorPosition());
+            assertEquals(0, e.getErrorPosition());
         }
     }
 
@@ -106,7 +111,7 @@ public class CalculatorTest {
             calculator.calculate("1+*2");
             Assert.fail();
         } catch (CalculationException e) {
-            Assert.assertEquals(2, e.getErrorPosition());
+            assertEquals(2, e.getErrorPosition());
         }
     }
 
@@ -116,7 +121,7 @@ public class CalculatorTest {
             calculator.calculate("5+((1+2)+3");
             Assert.fail();
         } catch (CalculationException e) {
-            Assert.assertEquals(10, e.getErrorPosition());
+            assertEquals(10, e.getErrorPosition());
         }
     }
 
@@ -126,7 +131,7 @@ public class CalculatorTest {
             calculator.calculate("5+(1))+1");
             Assert.fail();
         } catch (CalculationException e) {
-            Assert.assertEquals(5, e.getErrorPosition());
+            assertEquals(5, e.getErrorPosition());
         }
     }
 
@@ -136,7 +141,7 @@ public class CalculatorTest {
             calculator.calculate("(5+2+)");
             Assert.fail();
         } catch (CalculationException e) {
-            Assert.assertEquals(5, e.getErrorPosition());
+            assertEquals(5, e.getErrorPosition());
         }
     }
 
@@ -146,28 +151,28 @@ public class CalculatorTest {
             calculator.calculate("someFunction(1,2,3)");
             Assert.fail();
         } catch (CalculationException e) {
-            Assert.assertEquals(0, e.getErrorPosition());
+            assertEquals(0, e.getErrorPosition());
         }
     }
 
     @Test
     public void testMaxFunction() throws Exception {
-        Assert.assertEquals(5, calculator.calculate("max(2,5)"), 0.00001);
+        assertEquals(5, calculator.calculate("max(2,5)").get(), 0.00001);
     }
 
     @Test
     public void testSumFunction() throws Exception {
-        Assert.assertEquals(7, calculator.calculate("sum(2,5)"), 0.00001);
+        assertEquals(7, calculator.calculate("sum(2,5)").get(), 0.00001);
     }
 
     @Test
     public void testAverageFunction() throws Exception {
-        Assert.assertEquals(3, calculator.calculate("avg(1,5)"), 0.00001);
+        assertEquals(3, calculator.calculate("avg(1,5)").get(), 0.00001);
     }
 
     @Test
     public void testLog10Function() throws Exception {
-        Assert.assertEquals(3, calculator.calculate("log10(1000)"), 0.00001);
+        assertEquals(3, calculator.calculate("log10(1000)").get(), 0.00001);
     }
 
     @Test
@@ -176,7 +181,7 @@ public class CalculatorTest {
             calculator.calculate("log10(1000,50)");
             Assert.fail();
         } catch (CalculationException e) {
-            Assert.assertEquals(13, e.getErrorPosition());
+            assertEquals(13, e.getErrorPosition());
         }
     }
 
@@ -186,33 +191,33 @@ public class CalculatorTest {
             calculator.calculate("(10, 50)");
             Assert.fail();
         } catch (CalculationException e) {
-            Assert.assertEquals(7, e.getErrorPosition());
+            assertEquals(7, e.getErrorPosition());
         }
     }
 
     @Test
     public void testInnerMaxFunctionWithExpression() throws Exception {
-        Assert.assertEquals(11, calculator.calculate("1+max(2,5,max(6+4,5))"), 0.00001);
+        assertEquals(11, calculator.calculate("1+max(2,5,max(6+4,5))").get(), 0.00001);
     }
 
     @Test
     public void testBracketsAfterMaxFunction() throws Exception {
-        Assert.assertEquals(8, calculator.calculate("max(2,5)+(1+2)"), 0.00001);
+        assertEquals(8, calculator.calculate("max(2,5)+(1+2)").get(), 0.00001);
     }
 
     @Test
     public void testCaseSensitivity() throws Exception {
-        Assert.assertEquals(0, calculator.calculate("MAX(2, 5)-SUM(2, 3)"), 0.00001);
+        assertEquals(0, calculator.calculate("MAX(2, 5)-SUM(2, 3)").get(), 0.00001);
     }
 
     @Test
     public void testWhiteSpaces() throws Exception {
-        Assert.assertEquals(0, calculator.calculate("1 + 2 - 3"), 0.00001);
+        assertEquals(0, calculator.calculate("1 + 2 - 3").get(), 0.00001);
     }
 
     @Test
     public void testPiFunction() throws Exception {
-        Assert.assertEquals(Math.PI, calculator.calculate("pi()"), 0.00001);
+        assertEquals(Math.PI, calculator.calculate("pi()").get(), 0.00001);
     }
 
     @Test
@@ -221,23 +226,63 @@ public class CalculatorTest {
             calculator.calculate("pi(10,50)");
             Assert.fail();
         } catch (CalculationException e) {
-            Assert.assertEquals(8, e.getErrorPosition());
+            assertEquals(8, e.getErrorPosition());
         }
     }
 
     @Test
     public void testVariable() throws Exception {
-        Assert.assertEquals(2, calculator.calculate("a=1;b=1+a;b"), 0.00001);
+        assertEquals(2, calculator.calculate("a=1;b=1+a;b").get(), 0.00001);
     }
 
     @Test
     public void testVariableWithFunction() throws Exception {
-        Assert.assertEquals(3, calculator.calculate("a=max(1,2,3);a"), 0.00001);
+        assertEquals(3, calculator.calculate("a=max(1,2,3);a").get(), 0.00001);
     }
 
     @Test
     public void testSecondAssignmentIntoVariable() throws Exception {
-        Assert.assertEquals(5, calculator.calculate("a=max(1,2,3);a=5;a"), 0.00001);
+        assertEquals(5, calculator.calculate("a=max(1,2,3);a=5;a").get(), 0.00001);
     }
+
+    @Test
+    public void testDelimiter() throws Exception {
+        assertEquals(1, calculator.calculate("a=1;2;a").get(), 0.00001);
+    }
+
+    @Test
+    public void testPrintFunction() throws Exception {
+        final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        calculator.calculate("a = 1; print(a); 1+2+2;");
+        assertEquals("1.0", outContent.toString());
+        System.setOut(System.out);
+    }
+
+    @Test
+    public void testPrintInnerFunction() throws Exception {
+        final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        calculator.calculate("a = 10; b = a * 2; print(min(a, b));");
+        assertEquals("10.0", outContent.toString());
+        System.setOut(System.out);
+    }
+
+    @Test
+    public void testReturn() throws Exception {
+        assertEquals(7, calculator.calculate("a = 1; print(a+2); 1-1; 5+2;").get(), 0.00001);
+    }
+
+    @Test
+    public void testPrintWithoutArguments() throws Exception {
+        try {
+            calculator.calculate("print()");
+            Assert.fail();
+        } catch (CalculationException e) {
+            assertEquals(6, e.getErrorPosition());
+        }
+    }
+
+
 
 }

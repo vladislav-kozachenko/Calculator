@@ -3,6 +3,7 @@ package javaclasses.calculator.impl;
 import javaclasses.calculator.CalculationException;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Represents a function that accepts several arguments and produces a double result.
@@ -17,7 +18,7 @@ public abstract class Function {
         this.maxArguments = maxArguments;
     }
 
-    abstract public double execute(List<Double> args, ErrorHandler errorHandler) throws CalculationException;
+    abstract public Optional<Double> execute(List<Double> args, ErrorHandler errorHandler) throws CalculationException;
 
     protected void validateArgumentsNumber(int argumentsNumber, ErrorHandler errorHandler) throws CalculationException {
         if (argumentsNumber < minArguments || argumentsNumber > maxArguments) {

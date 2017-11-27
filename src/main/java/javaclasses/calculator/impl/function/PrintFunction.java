@@ -7,15 +7,17 @@ import javaclasses.calculator.impl.Function;
 import java.util.List;
 import java.util.Optional;
 
-public class PiFunction extends Function {
+public class PrintFunction extends Function {
 
-    public PiFunction(int minArguments, int maxArguments) {
+    public PrintFunction(int minArguments, int maxArguments) {
         super(minArguments, maxArguments);
     }
 
     @Override
     public Optional<Double> execute(List<Double> args, ErrorHandler errorHandler) throws CalculationException {
         validateArgumentsNumber(args.size(), errorHandler);
-        return Optional.of(Math.PI);
+        System.out.print(args.get(0));
+
+        return Optional.empty();
     }
 }

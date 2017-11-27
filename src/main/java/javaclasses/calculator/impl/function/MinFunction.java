@@ -6,6 +6,7 @@ import javaclasses.calculator.impl.Function;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class MinFunction extends Function {
 
@@ -14,8 +15,8 @@ public class MinFunction extends Function {
     }
 
     @Override
-    public double execute(List<Double> args, ErrorHandler errorHandler) throws CalculationException {
+    public Optional<Double> execute(List<Double> args, ErrorHandler errorHandler) throws CalculationException {
         validateArgumentsNumber(args.size(), errorHandler);
-        return Collections.min(args);
+        return Optional.of(Collections.min(args));
     }
 }

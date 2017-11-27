@@ -33,7 +33,7 @@ public class ParserTest {
         ExpressionParser parser = factory.getParser(State.NUMBER);
         ExpressionReader reader = new ExpressionReader("123.456");
         Assert.assertTrue(parser.parse(reader, context));
-        Assert.assertEquals(123.456, context.getResult(), 0.0001);
+        Assert.assertEquals(123.456, context.getResult().get(), 0.0001);
     }
 
     @Test

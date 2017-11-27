@@ -26,7 +26,7 @@ public class FunctionTest {
     public void testMaxFunction() throws CalculationException {
         arguments.add(1.0);
         arguments.add(5.0);
-        Assert.assertEquals(5, factory.getFunction("max").execute(arguments, errorHandler), 0.0001);
+        Assert.assertEquals(5, factory.getFunction("max").execute(arguments, errorHandler).get(), 0.0001);
     }
 
     @Test
@@ -34,7 +34,7 @@ public class FunctionTest {
         arguments.add(1.0);
         arguments.add(5.0);
         arguments.add(5.0);
-        Assert.assertEquals(11, factory.getFunction("sum").execute(arguments, errorHandler), 0.0001);
+        Assert.assertEquals(11, factory.getFunction("sum").execute(arguments, errorHandler).get(), 0.0001);
     }
 
     @Test
@@ -42,7 +42,7 @@ public class FunctionTest {
         arguments.add(1.0);
         arguments.add(2.0);
         arguments.add(3.0);
-        Assert.assertEquals(2, factory.getFunction("avg").execute(arguments, errorHandler), 0.0001);
+        Assert.assertEquals(2, factory.getFunction("avg").execute(arguments, errorHandler).get(), 0.0001);
     }
 
     @Test(expected = CalculationException.class)
@@ -54,12 +54,12 @@ public class FunctionTest {
     @Test
     public void testLog10Function() throws CalculationException {
         arguments.add(100.0);
-        Assert.assertEquals(2, factory.getFunction("log10").execute(arguments, errorHandler), 0.0001);
+        Assert.assertEquals(2, factory.getFunction("log10").execute(arguments, errorHandler).get(), 0.0001);
     }
 
     @Test
     public void testPiFunction() throws CalculationException {
-        Assert.assertEquals(Math.PI, factory.getFunction("pi").execute(arguments, errorHandler), 0.0001);
+        Assert.assertEquals(Math.PI, factory.getFunction("pi").execute(arguments, errorHandler).get(), 0.0001);
     }
 
     @Test(expected = CalculationException.class)

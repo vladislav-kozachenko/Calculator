@@ -18,16 +18,18 @@ public class EvaluationContext {
     private Function nextFunction;
     private String nextVariable;
     private ErrorHandler errorHandler;
-    private Map<String, Double> variables = new HashMap<>();
+    private Optional<Double> result;
 
     private final Deque<Double> operandStack = new ArrayDeque<>();
     private final Deque<BinaryOperator> operatorStack = new ArrayDeque<>();
 
     private final Deque<FunctionContext> functionStack = new ArrayDeque<>();
+    private final Map<String, Double> variables = new HashMap<>();
 
     public EvaluationContext(ErrorHandler handler){
         this.errorHandler = handler;
         nextFunction = new BracketsFunction();
+        result = Optional.empty();
     }
 
     /**
@@ -43,7 +45,7 @@ public class EvaluationContext {
      * @return result of expression evaluation (double).
      * @throws CalculationException if expression has wrong number of brackets or if it is internal error.
      */
-    double getResult() throws CalculationException {
+    Optional<Double> getResult() throws CalculationException {
 
         while (!operatorStack.isEmpty()) {
             popTopOperator();
@@ -56,7 +58,11 @@ public class EvaluationContext {
             }
             errorHandler.raiseError("Internal error.");
         }
-        return operandStack.pop();
+        if (operandStack.isEmpty()){
+            return result;
+        } else {
+            return Optional.of(operandStack.pop());
+        }
     }
 
     /**
@@ -106,10 +112,10 @@ public class EvaluationContext {
     }
 
     private void executeCurrentFunction() throws CalculationException {
-        if (isFunctionWithoutArgument()) {
+        if (isFunctionWithArgument()) {
             addCurrentFunctionArgument(operandStack.pop());
         }
-        operandStack.push(functionStack.pop().execute(errorHandler));
+        functionStack.pop().execute(errorHandler).ifPresent(operandStack::push);
     }
 
     public void pushFunction(Function function) {
@@ -133,7 +139,7 @@ public class EvaluationContext {
         return !functionStack.isEmpty() && operatorStack.size() > functionStack.peek().getBracketPosition();
     }
 
-    private boolean isFunctionWithoutArgument() {
+    private boolean isFunctionWithArgument() {
         return operandStack.size() > operatorStack.size();
     }
 
@@ -141,8 +147,17 @@ public class EvaluationContext {
         nextVariable = variableName;
     }
 
-    public void saveVariable() throws CalculationException {
-        variables.put(nextVariable, getResult());
+    /**
+     * Assigns result of evaluation to variable if it was declared.
+     * @throws CalculationException
+     */
+    public void pushDelimiter() throws CalculationException {
+        if (nextVariable != null) {
+            variables.put(nextVariable, getResult().get());
+            nextVariable = null;
+        } else {
+            result = getResult();
+        }
     }
 
     public Set<String> getVariableNames() {

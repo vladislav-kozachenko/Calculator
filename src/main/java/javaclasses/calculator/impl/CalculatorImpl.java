@@ -7,6 +7,7 @@ import javaclasses.calculator.impl.parser.ParserFactory;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import static java.util.EnumSet.of;
@@ -15,11 +16,11 @@ import static javaclasses.calculator.impl.State.BINARY_OPERATOR;
 import static javaclasses.calculator.impl.State.NUMBER;
 
 /**
- * Implements a calculator that accepts mathematical expression in a String argument and produces a double result.<br>
+ * Implements a calculator that accepts mathematical expression in a String argument and produces a Optional<Double></Double> result.<br>
  * Method calculate evaluates the received expression.
  *
  * Input can contain: numbers, brackets, mathematical operators.
- * Whitespaces are allowed. Calculator is not case sensitive.<br>
+ * Whitespaces are allowed. Calculator is not case sensitive. Variables are allowed. Returns the result of last expression or Optional#empty.<br>
  * Operators can be used:
  * <li>
  * <ul>+ plus</ul>
@@ -27,6 +28,7 @@ import static javaclasses.calculator.impl.State.NUMBER;
  * <ul>* multiplication</ul>
  * <ul>/ division</ul>
  * <ul>^ exponentiation</ul>
+ * <ul>= assign value to decimal variable</ul>
  * </li>
  * Functions are allowed:
  * <li>
@@ -36,7 +38,11 @@ import static javaclasses.calculator.impl.State.NUMBER;
  * <ul>avg(double... args);</ul>
  * <ul>log10(double argument);</ul>
  * <ul>pi();</ul>
+ * <ul>print(double argument);</ul>
  * </li>
+ *
+ * Example: <br>
+ *     a = 10; b = a * 5; print(sum(a, b))
  */
 public class CalculatorImpl extends FiniteStateMachine<EvaluationContext, ExpressionReader, State, CalculationException> implements Calculator {
 
@@ -47,8 +53,8 @@ public class CalculatorImpl extends FiniteStateMachine<EvaluationContext, Expres
         put(NUMBER, of(BINARY_OPERATOR, CLOSING_BRACKET, ARGUMENT_SEPARATOR, DELIMITER, FINISH));
         put(BINARY_OPERATOR, of(NUMBER, OPENING_BRACKET, FUNCTION_NAME, VARIABLE_READING));
         put(FUNCTION_NAME, of(OPENING_BRACKET));
-        put(ARGUMENT_SEPARATOR, of(NUMBER, OPENING_BRACKET, FUNCTION_NAME));
-        put(OPENING_BRACKET, of(NUMBER, OPENING_BRACKET, FUNCTION_NAME, CLOSING_BRACKET));
+        put(ARGUMENT_SEPARATOR, of(NUMBER, OPENING_BRACKET, FUNCTION_NAME, VARIABLE_READING));
+        put(OPENING_BRACKET, of(NUMBER, OPENING_BRACKET, FUNCTION_NAME, CLOSING_BRACKET, VARIABLE_READING));
         put(CLOSING_BRACKET, of(BINARY_OPERATOR, CLOSING_BRACKET, ARGUMENT_SEPARATOR, DELIMITER, FINISH));
         put(VARIABLE_ASSIGNMENT, of(NUMBER, OPENING_BRACKET, FUNCTION_NAME, VARIABLE_READING));
         put(DELIMITER, of(NUMBER, OPENING_BRACKET, FUNCTION_NAME, VARIABLE_ASSIGNMENT, VARIABLE_READING, FINISH));
@@ -62,7 +68,7 @@ public class CalculatorImpl extends FiniteStateMachine<EvaluationContext, Expres
      * @throws CalculationException if expression is in incorrect format.
      */
     @Override
-    public double calculate(String expression) throws Exception {
+    public Optional<Double> calculate(String expression) throws Exception {
 
         ExpressionReader reader = new ExpressionReader(prepareString(expression));
 
