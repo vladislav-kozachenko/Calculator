@@ -1,5 +1,7 @@
 package javaclasses.calculator;
 
+import java.util.Optional;
+
 /**
  * Represents a calculator that have method calculate.
  * Accepts mathematical expression in a String argument and produces a double result.
@@ -13,6 +15,6 @@ public interface Calculator {
      * @param expression is a math expression may be solved.
      * @return the result of expression.
      */
-    double calculate(String expression) throws Exception;
+    Optional<Double> calculate(String expression) throws Exception;
 
 }

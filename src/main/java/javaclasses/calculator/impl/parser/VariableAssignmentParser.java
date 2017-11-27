@@ -12,9 +12,9 @@ public class VariableAssignmentParser implements ExpressionParser {
 
         final String expression = reader.getRemainingExpression();
 
-        if (expression.matches("^\\w+=.+")) {
+        if (expression.matches("^\\w+\\s*=.+")) {
             final int endOfVariableName = expression.indexOf("=");
-            context.declareVariable(expression.substring(0, endOfVariableName));
+            context.declareVariable(expression.substring(0, endOfVariableName).replaceAll("\\s", ""));
             reader.incrementParsePosition(endOfVariableName + 1);
             return true;
 

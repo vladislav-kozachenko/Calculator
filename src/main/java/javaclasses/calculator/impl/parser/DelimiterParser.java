@@ -13,7 +13,7 @@ public class DelimiterParser implements ExpressionParser {
         final String expression = reader.getRemainingExpression();
 
         if (expression.startsWith(";")) {
-            context.saveVariable();
+            context.pushDelimiter();
             reader.incrementParsePosition(1);
             return true;
 

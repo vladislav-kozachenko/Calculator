@@ -15,6 +15,7 @@ public class FunctionFactory {
         put("avg", new AverageFunction(2, Integer.MAX_VALUE));
         put("log10", new Logarithm10Function(1, 1));
         put("pi", new PiFunction(0, 0));
+        put("print", new PrintFunction(1, 1));
     }};
 
     public Function getFunction(String name){
