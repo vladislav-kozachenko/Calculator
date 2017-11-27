@@ -19,15 +19,11 @@ public class FunctionParser implements ExpressionParser {
 
                 context.pushFunction(factory.getFunction(name));
                 reader.incrementParsePosition(name.length());
-                parseArguments();
 
                 return true;
             }
         }
 
         return false;
-    }
-
-    private void parseArguments() {
     }
 }

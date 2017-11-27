@@ -11,6 +11,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -44,47 +45,27 @@ public class ParserTest {
 
     @Test
     public void testOperatorPlusParsing() throws CalculationException {
-        ExpressionParser parser = factory.getParser(State.BINARY_OPERATOR);
-        ExpressionReader reader = new ExpressionReader("+");
-        EvaluationContext evaluationContext = mock(EvaluationContext.class);
-        parser.parse(reader, evaluationContext);
-        verify(evaluationContext).pushBinaryOperator(any(PlusOperator.class));
+        testOperator("+", PlusOperator.class);
     }
 
     @Test
     public void testOperatorMinusParsing() throws CalculationException {
-        ExpressionParser parser = factory.getParser(State.BINARY_OPERATOR);
-        ExpressionReader reader = new ExpressionReader("-");
-        EvaluationContext evaluationContext = mock(EvaluationContext.class);
-        parser.parse(reader, evaluationContext);
-        verify(evaluationContext).pushBinaryOperator(any(MinusOperator.class));
+        testOperator("-", MinusOperator.class);
     }
 
     @Test
     public void testOperatorMultiplicationParsing() throws CalculationException {
-        ExpressionParser parser = factory.getParser(State.BINARY_OPERATOR);
-        ExpressionReader reader = new ExpressionReader("*");
-        EvaluationContext evaluationContext = mock(EvaluationContext.class);
-        parser.parse(reader, evaluationContext);
-        verify(evaluationContext).pushBinaryOperator(any(MultiplicationOperator.class));
+        testOperator("*", MultiplicationOperator.class);
     }
 
     @Test
     public void testOperatorDivisionParsing() throws CalculationException {
-        ExpressionParser parser = factory.getParser(State.BINARY_OPERATOR);
-        ExpressionReader reader = new ExpressionReader("/");
-        EvaluationContext evaluationContext = mock(EvaluationContext.class);
-        parser.parse(reader, evaluationContext);
-        verify(evaluationContext).pushBinaryOperator(any(DivisionOperator.class));
+        testOperator("/", DivisionOperator.class);
     }
 
     @Test
     public void testOperatorExponentiationParsing() throws CalculationException {
-        ExpressionParser parser = factory.getParser(State.BINARY_OPERATOR);
-        ExpressionReader reader = new ExpressionReader("^");
-        EvaluationContext evaluationContext = mock(EvaluationContext.class);
-        parser.parse(reader, evaluationContext);
-        verify(evaluationContext).pushBinaryOperator(any(ExponentiationOperator.class));
+        testOperator("^", ExponentiationOperator.class);
     }
 
     @Test
@@ -119,38 +100,38 @@ public class ParserTest {
 
     @Test
     public void testSumFunctionParsing() throws CalculationException {
-        ExpressionParser parser = factory.getParser(State.FUNCTION_NAME);
-        ExpressionReader reader = new ExpressionReader("sum");
-        EvaluationContext evaluationContext = mock(EvaluationContext.class);
-        parser.parse(reader, evaluationContext);
-        verify(evaluationContext).pushFunction(any(SumFunction.class));
+        testFunction("sum", SumFunction.class);
     }
 
     @Test
     public void testMaxFunctionParsing() throws CalculationException {
-        ExpressionParser parser = factory.getParser(State.FUNCTION_NAME);
-        ExpressionReader reader = new ExpressionReader("max");
-        EvaluationContext evaluationContext = mock(EvaluationContext.class);
-        parser.parse(reader, evaluationContext);
-        verify(evaluationContext).pushFunction(any(MaxFunction.class));
+        testFunction("max", MaxFunction.class);
     }
 
     @Test
     public void testAverageFunctionParsing() throws CalculationException {
-        ExpressionParser parser = factory.getParser(State.FUNCTION_NAME);
-        ExpressionReader reader = new ExpressionReader("avg");
-        EvaluationContext evaluationContext = mock(EvaluationContext.class);
-        parser.parse(reader, evaluationContext);
-        verify(evaluationContext).pushFunction(any(AverageFunction.class));
+        testFunction("avg", AverageFunction.class);
     }
 
     @Test
     public void testPiFunctionParsing() throws CalculationException {
+        testFunction("pi", PiFunction.class);
+    }
+
+    private void testFunction(String functionName, Class<? extends Function> functionClass) throws CalculationException {
         ExpressionParser parser = factory.getParser(State.FUNCTION_NAME);
-        ExpressionReader reader = new ExpressionReader("pi");
+        ExpressionReader reader = new ExpressionReader(functionName);
         EvaluationContext evaluationContext = mock(EvaluationContext.class);
         parser.parse(reader, evaluationContext);
-        verify(evaluationContext).pushFunction(any(PiFunction.class));
+        verify(evaluationContext).pushFunction(any(functionClass));
+    }
+
+    private void testOperator(String operator, Class<? extends BinaryOperator> operatorClass) throws CalculationException {
+        ExpressionParser parser = factory.getParser(State.BINARY_OPERATOR);
+        ExpressionReader reader = new ExpressionReader(operator);
+        EvaluationContext evaluationContext = mock(EvaluationContext.class);
+        parser.parse(reader, evaluationContext);
+        verify(evaluationContext).pushBinaryOperator(any(operatorClass));
     }
 
 }

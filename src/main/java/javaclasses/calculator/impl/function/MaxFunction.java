@@ -7,13 +7,15 @@ import javaclasses.calculator.impl.Function;
 import java.util.Collections;
 import java.util.List;
 
-public class MaxFunction implements Function {
+public class MaxFunction extends Function {
+
+    public MaxFunction(int minArguments, int maxArguments) {
+        super(minArguments, maxArguments);
+    }
 
     @Override
     public double execute(List<Double> args, ErrorHandler errorHandler) throws CalculationException {
-        if (args.size() < 2){
-            errorHandler.raiseError("Function MAX gets as least 2 arguments.");
-        }
+        validateArgumentsNumber(args.size(), errorHandler);
         return Collections.max(args);
     }
 }

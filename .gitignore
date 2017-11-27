@@ -6,3 +6,6 @@
 /build/
 /fsm/build/
 /Calculator.iml
+/gradlew
+/gradlew.bat
+/gradle/

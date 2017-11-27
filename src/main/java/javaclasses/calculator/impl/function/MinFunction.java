@@ -7,13 +7,15 @@ import javaclasses.calculator.impl.Function;
 import java.util.Collections;
 import java.util.List;
 
-public class MinFunction implements Function {
+public class MinFunction extends Function {
+
+    public MinFunction(int minArguments, int maxArguments) {
+        super(minArguments, maxArguments);
+    }
 
     @Override
     public double execute(List<Double> args, ErrorHandler errorHandler) throws CalculationException {
-        if (args.size() < 2){
-            errorHandler.raiseError("Function MIN gets as least 2 arguments.");
-        }
+        validateArgumentsNumber(args.size(), errorHandler);
         return Collections.min(args);
     }
 }

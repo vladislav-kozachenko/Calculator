@@ -7,15 +7,16 @@ import javaclasses.calculator.impl.Function;
 import java.util.Collections;
 import java.util.List;
 
-public class SumFunction implements Function {
+public class SumFunction extends Function {
+
+    public SumFunction(int minArguments, int maxArguments) {
+        super(minArguments, maxArguments);
+    }
 
     @Override
     public double execute(List<Double> args, ErrorHandler errorHandler) throws CalculationException {
 
-        if (args.size() < 2){
-            errorHandler.raiseError("Function SUM gets as least 2 arguments.");
-        }
-
+        validateArgumentsNumber(args.size(), errorHandler);
 
         double result = 0;
         for (double value: args) {

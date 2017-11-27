@@ -6,15 +6,16 @@ import javaclasses.calculator.impl.Function;
 
 import java.util.List;
 
-public class AverageFunction implements Function {
+public class AverageFunction extends Function {
+
+    public AverageFunction(int minArguments, int maxArguments) {
+        super(minArguments, maxArguments);
+    }
 
     @Override
     public double execute(List<Double> args, ErrorHandler errorHandler) throws CalculationException {
-        if (args.size() < 2){
-            errorHandler.raiseError("Function average gets as least 2 arguments.");
-        }
-
-        return new SumFunction().execute(args, errorHandler)/args.size();
+        validateArgumentsNumber(args.size(), errorHandler);
+        return new SumFunction(2, Integer.MAX_VALUE).execute(args, errorHandler)/args.size();
 
     }
 }

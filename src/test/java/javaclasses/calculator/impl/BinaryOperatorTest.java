@@ -3,11 +3,13 @@ package javaclasses.calculator.impl;
 import javaclasses.calculator.CalculationException;
 import javaclasses.calculator.impl.operator.BinaryOperatorFactory;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 public class BinaryOperatorTest {
 
     private BinaryOperatorFactory factory = new BinaryOperatorFactory();
+
 
     @Test
     public void testOperatorPlus(){

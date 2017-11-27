@@ -6,13 +6,15 @@ import javaclasses.calculator.impl.Function;
 
 import java.util.List;
 
-public class Logarithm10Function implements Function {
+public class Logarithm10Function extends Function {
+
+    public Logarithm10Function(int minArguments, int maxArguments) {
+        super(minArguments, maxArguments);
+    }
 
     @Override
     public double execute(List<Double> args, ErrorHandler errorHandler) throws CalculationException {
-        if (args.size() != 1){
-            errorHandler.raiseError("Logarithm function needs 1 argument. Used " + args.size() + " arguments.");
-        }
+        validateArgumentsNumber(args.size(), errorHandler);
         return Math.log10(args.get(0));
     }
 }

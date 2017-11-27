@@ -2,7 +2,9 @@ package javaclasses.calculator;
 
 import javaclasses.calculator.impl.CalculatorImpl;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
+
 
 public class CalculatorTest {
 
@@ -181,10 +183,10 @@ public class CalculatorTest {
     @Test
     public void testCommaInGeneralBrackets() throws Exception {
         try {
-            calculator.calculate("(10,50)");
+            calculator.calculate("(10, 50)");
             Assert.fail();
         } catch (CalculationException e) {
-            Assert.assertEquals(3, e.getErrorPosition());
+            Assert.assertEquals(7, e.getErrorPosition());
         }
     }
 
@@ -200,7 +202,7 @@ public class CalculatorTest {
 
     @Test
     public void testCaseSensitivity() throws Exception {
-        Assert.assertEquals(0, calculator.calculate("MAX(2,5)-SUM(2,3)"), 0.00001);
+        Assert.assertEquals(0, calculator.calculate("MAX(2, 5)-SUM(2, 3)"), 0.00001);
     }
 
     @Test

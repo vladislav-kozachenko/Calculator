@@ -6,12 +6,16 @@ import javaclasses.calculator.impl.Function;
 
 import java.util.List;
 
-public class BracketsFunction implements Function {
+public class BracketsFunction extends Function {
+
+    public BracketsFunction() {
+        super(1, 1);
+    }
 
     @Override
     public double execute(List<Double> args, ErrorHandler errorHandler) throws CalculationException {
         if (args.size() != 1){
-            errorHandler.raiseError("Commas can be used only in functions.");
+            errorHandler.raiseError("Argument separators are forbidden in a common brackets.");
         }
         return args.get(0);
     }

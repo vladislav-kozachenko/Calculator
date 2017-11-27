@@ -6,13 +6,15 @@ import javaclasses.calculator.impl.Function;
 
 import java.util.List;
 
-public class PiFunction implements Function {
+public class PiFunction extends Function {
+
+    public PiFunction(int minArguments, int maxArguments) {
+        super(minArguments, maxArguments);
+    }
 
     @Override
     public double execute(List<Double> args, ErrorHandler errorHandler) throws CalculationException {
-        if (args.size() != 0){
-            errorHandler.raiseError("Function PI gets no arguments.");
-        }
+        validateArgumentsNumber(args.size(), errorHandler);
         return Math.PI;
     }
 }
