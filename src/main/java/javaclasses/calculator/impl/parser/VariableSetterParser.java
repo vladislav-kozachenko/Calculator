@@ -4,8 +4,9 @@ import javaclasses.calculator.CalculationException;
 import javaclasses.calculator.impl.EvaluationContext;
 import javaclasses.calculator.impl.ExpressionParser;
 import javaclasses.calculator.impl.ExpressionReader;
+import javaclasses.calculator.impl.command.VariableSetterCommand;
 
-public class VariableAssignmentParser implements ExpressionParser {
+public class VariableSetterParser implements ExpressionParser {
 
     @Override
     public boolean parse(ExpressionReader reader, EvaluationContext context) throws CalculationException {
@@ -14,7 +15,9 @@ public class VariableAssignmentParser implements ExpressionParser {
 
         if (expression.matches("^\\w+\\s*=.+")) {
             final int endOfVariableName = expression.indexOf("=");
-            context.declareVariable(expression.substring(0, endOfVariableName).replaceAll("\\s", ""));
+            new VariableSetterCommand(expression.substring(0, endOfVariableName)
+                    .replaceAll("\\s", ""))
+                    .execute(context);
             reader.incrementParsePosition(endOfVariableName + 1);
             return true;
 

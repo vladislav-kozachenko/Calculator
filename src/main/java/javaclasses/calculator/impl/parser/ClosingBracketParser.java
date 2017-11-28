@@ -4,6 +4,7 @@ import javaclasses.calculator.CalculationException;
 import javaclasses.calculator.impl.EvaluationContext;
 import javaclasses.calculator.impl.ExpressionParser;
 import javaclasses.calculator.impl.ExpressionReader;
+import javaclasses.calculator.impl.command.ClosingBracketCommand;
 
 public class ClosingBracketParser implements ExpressionParser {
     @Override
@@ -13,7 +14,7 @@ public class ClosingBracketParser implements ExpressionParser {
 
         if (expression.startsWith(")")) {
 
-            context.pushClosingBracket();
+            new ClosingBracketCommand().execute(context);
             reader.incrementParsePosition(1);
             return true;
 

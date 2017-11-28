@@ -4,6 +4,7 @@ import javaclasses.calculator.CalculationException;
 import javaclasses.calculator.impl.EvaluationContext;
 import javaclasses.calculator.impl.ExpressionParser;
 import javaclasses.calculator.impl.ExpressionReader;
+import javaclasses.calculator.impl.command.DelimiterCommand;
 
 public class DelimiterParser implements ExpressionParser {
 
@@ -13,7 +14,7 @@ public class DelimiterParser implements ExpressionParser {
         final String expression = reader.getRemainingExpression();
 
         if (expression.startsWith(";")) {
-            context.pushDelimiter();
+            new DelimiterCommand().execute(context);
             reader.incrementParsePosition(1);
             return true;
 

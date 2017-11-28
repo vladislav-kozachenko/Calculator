@@ -4,6 +4,7 @@ import javaclasses.calculator.CalculationException;
 import javaclasses.calculator.impl.EvaluationContext;
 import javaclasses.calculator.impl.ExpressionParser;
 import javaclasses.calculator.impl.ExpressionReader;
+import javaclasses.calculator.impl.command.ArgumentSeparatorCommand;
 
 public class ArgumentSeparatorParser implements ExpressionParser {
     @Override
@@ -13,7 +14,7 @@ public class ArgumentSeparatorParser implements ExpressionParser {
 
         if (expression.startsWith(",")) {
 
-            context.pushArgumentSeparator();
+            new ArgumentSeparatorCommand().execute(context);
             reader.incrementParsePosition(1);
             return true;
         }
